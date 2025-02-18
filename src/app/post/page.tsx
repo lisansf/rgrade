@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import LoadingComponents from '../Components/Loading';
-import ErrorComponents from "../Components/Error"
+import { LoadingComponent, ErrorComponent } from '../Components/Status';
 import Link from 'next/link';
 
 interface Post {
@@ -61,11 +60,11 @@ export default function Posts() {
     }, []);
 
     if (loading) {
-        return <LoadingComponents />;
+        return <LoadingComponent />;
     }
 
     if (error) {
-        return <ErrorComponents msg={`Error: ${error}`} />;
+        return <ErrorComponent msg={`Error: ${error}`} />;
     }
 
     return (
