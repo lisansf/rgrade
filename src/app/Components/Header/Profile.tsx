@@ -136,18 +136,19 @@ export default function Profile() {
             </div>
 
             {/* Tampilkan modal jika state aktif */}
-            {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
-            {showRegister && <RegisterModal onClose={() => setShowRegister(false)} />}
+            {showLogin && <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} toggleModal={toggleModal} switchToRegister={switchToRegister} onLoginSuccess={handleLoginSuccess} />}
+            {showRegister && <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} toggleModal={toggleRegisterModal} switchToLogin={switchToLogin} />}
             {/* Modal Login */}
             <LoginModal
                 isOpen={isModalOpen}
                 toggleModal={toggleModal}
                 switchToRegister={switchToRegister}
                 onLoginSuccess={handleLoginSuccess}
+                onClose={() => setShowLogin(false)}
             />
 
             {/* Modal Register */}
-            <RegisterModal isOpen={isRegisterModalOpen} toggleModal={toggleRegisterModal} switchToLogin={switchToLogin} />
+            <RegisterModal isOpen={isRegisterModalOpen} toggleModal={toggleRegisterModal} switchToLogin={switchToLogin} onClose={() => setShowRegister(false)} />
         </div>
     );
 }

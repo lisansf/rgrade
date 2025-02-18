@@ -6,10 +6,12 @@ export default function RegisterModal({
   isOpen,
   toggleModal,
   switchToLogin,
+  onClose,
 }: {
   isOpen: boolean;
   toggleModal: () => void;
   switchToLogin: () => void;
+  onClose: () => void;
 }) {
   const [email, setEmail] = useState('');
   const [username, setUserName] = useState('');
@@ -43,6 +45,7 @@ export default function RegisterModal({
       setPassword('');
       setConfirmPass('');
       setProfileModalOpen(true); // Buka modal profil
+      onClose();
     } else {
       alert(data.message); // Error message
     }

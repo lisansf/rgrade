@@ -6,8 +6,10 @@ export default function LoginModal({
   toggleModal,
   switchToRegister,
   onLoginSuccess,
+  onClose,
 }: {
   isOpen: boolean;
+  onClose: () => void;
   toggleModal: () => void;
   switchToRegister: () => void;
   onLoginSuccess: () => void;
@@ -37,6 +39,7 @@ export default function LoginModal({
       setPassword('')
       toggleModal();
       onLoginSuccess();
+      onClose();
       window.location.reload();
     } else {
       alert(data.message);

@@ -10,6 +10,8 @@ export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false)
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -113,14 +115,19 @@ export default function Home() {
         </Link>
       </div>
 
+      {showLogin && <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} toggleModal={toggleModal} switchToRegister={switchToRegister} onLoginSuccess={handleLoginSuccess} />}
+      {showRegister && <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} toggleModal={toggleRegisterModal} switchToLogin={switchToLogin} />}
+
       <LoginModal
         isOpen={isModalOpen}
         toggleModal={toggleModal}
         switchToRegister={switchToRegister}
         onLoginSuccess={handleLoginSuccess}
+        onClose={() => setShowLogin(false)}
       />
 
-      <RegisterModal isOpen={isRegisterModalOpen} toggleModal={toggleRegisterModal} switchToLogin={switchToLogin} />
+      {/* Modal Register */}
+      <RegisterModal isOpen={isRegisterModalOpen} toggleModal={toggleRegisterModal} switchToLogin={switchToLogin} onClose={() => setShowRegister(false)} />
     </>
   );
 }
