@@ -10,11 +10,6 @@ export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State untuk mengecek login
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -35,8 +30,8 @@ export default function Home() {
   };
 
   const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
-    setIsModalOpen(false);
+    setIsModalOpen(false); // ✅ Tutup modal login
+    window.location.reload(); // ✅ Refresh halaman agar session terupdate
   };
 
   return (
@@ -52,10 +47,10 @@ export default function Home() {
             </div>
 
             <div className="flex gap-10">
-              <Link href="./" className="hover:text-[#ECB365]">Home</Link>
-              <Link href="/latest" className="hover:text-[#ECB365]">Latest</Link>
-              <Link href="#" className="hover:text-[#ECB365]">Guide</Link>
-              <Link href="#" className="hover:text-[#ECB365]">Category</Link>
+              <Link href="/" className="hover:text-[#ECB365]">Home</Link>
+              <Link href="/post/latest" className="hover:text-[#ECB365]">Latest</Link>
+              <Link href="/post/guide" className="hover:text-[#ECB365]">Guide</Link>
+              <Link href="/post/category" className="hover:text-[#ECB365]">Category</Link>
             </div>
 
             {/* Search Bar dan Profile */}
@@ -93,13 +88,29 @@ export default function Home() {
       >
         <h2 className="text-3xl text-[#ECB365] font-bold mb-5">Discover</h2>
         <img src="/PemisahOrange.png" alt="Separator" />
-        <Link href="/" className="block py-2 pt-8 text-2xl font-bold hover:text-[#ECB365]">Home</Link>
+        <Link
+          href="/"
+          className="block py-2 pt-8 text-2xl font-bold hover:text-[#ECB365]">
+          Home
+        </Link>
         <img src="PemisahPutih.png" alt="Separator" />
-        <Link href="/post/latest" className="block py-2 text-2xl font-bold hover:text-[#ECB365]">Latest</Link>
+        <Link
+          href="/post/latest"
+          className="block py-2 text-2xl font-bold hover:text-[#ECB365]">
+          Latest
+        </Link>
         <img src="PemisahPutih.png" alt="Separator" />
-        <Link href="#" className="block py-2 text-2xl font-bold hover:text-[#ECB365]">Guide</Link>
+        <Link
+          href="/post/guide"
+          className="block py-2 text-2xl font-bold hover:text-[#ECB365]">
+          Guide
+        </Link>
         <img src="PemisahPutih.png" alt="Separator" />
-        <Link href="#" className="block py-2 text-2xl font-bold hover:text-[#ECB365]">Category</Link>
+        <Link
+          href="/post/category"
+          className="block py-2 text-2xl font-bold hover:text-[#ECB365]">
+          Category
+        </Link>
       </div>
 
       <LoginModal

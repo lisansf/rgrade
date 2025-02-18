@@ -18,41 +18,42 @@ export default function Profile() {
         role: "",
     });
 
-    const defaultImg = "/person.png" ;
+    const defaultImg = "/person.png";
 
     useEffect(() => {
-        function handleClickOutside(event) {
-            if (dropDown && !event.target.closest(".dropdown-container")) {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropDown && !(event.target as HTMLElement).closest(".dropdown-container")) {
                 setDropDown(false);
             }
         }
-    
+
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [dropDown]);
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
-      };
-    
-      const toggleRegisterModal = () => {
+    };
+
+    const toggleRegisterModal = () => {
         setIsRegisterModalOpen(!isRegisterModalOpen);
-      };
-    
-      const switchToRegister = () => {
+    };
+
+    const switchToRegister = () => {
         setIsModalOpen(false); // Tutup login modal
         setIsRegisterModalOpen(true); // Buka register modal
-      };
-    
-      const switchToLogin = () => {
+    };
+
+    const switchToLogin = () => {
         setIsRegisterModalOpen(false); // Tutup register modal
         setIsModalOpen(true); // Buka login modal
-      };
-    
-      const handleLoginSuccess = () => {
-        setIsLoggedIn(true); // Set login status ke true setelah login berhasil
-        setIsModalOpen(false); // Tutup login modal setelah berhasil login
-      };
+    };
+
+    const handleLoginSuccess = () => {
+        setIsLoggedIn(true); // ✅ Perbarui state user
+        setIsModalOpen(false); // ✅ Tutup modal login
+        window.location.reload(); // ✅ Refresh halaman agar session terupdate
+    };
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -86,16 +87,16 @@ export default function Profile() {
             >
                 {!isLoggedIn ? (
                     <div className="flex flex-col p-2 gap-2">
-                <div
-                  onClick={toggleModal}
-                  className="text-gray-700 hover:text-blue-500 text-center cursor-pointer transform transition-transform duration-200 hover:scale-125">
-                  <span>Login</span>
-                </div>
-                <div
-                  onClick={toggleRegisterModal}
-                  className="text-gray-700 hover:text-blue-500 text-center cursor-pointer transform transition-transform duration-200 hover:scale-125">
-                  <span>Register</span>
-                </div>
+                        <div
+                            onClick={toggleModal}
+                            className="text-gray-700 hover:text-blue-500 text-center cursor-pointer transform transition-transform duration-200 hover:scale-125">
+                            <span>Login</span>
+                        </div>
+                        <div
+                            onClick={toggleRegisterModal}
+                            className="text-gray-700 hover:text-blue-500 text-center cursor-pointer transform transition-transform duration-200 hover:scale-125">
+                            <span>Register</span>
+                        </div>
                     </div>
                 ) : (
                     <>
@@ -137,16 +138,16 @@ export default function Profile() {
             {/* Tampilkan modal jika state aktif */}
             {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
             {showRegister && <RegisterModal onClose={() => setShowRegister(false)} />}
-                {/* Modal Login */}
-                      <LoginModal
-                        isOpen={isModalOpen}
-                        toggleModal={toggleModal}
-                        switchToRegister={switchToRegister}
-                        onLoginSuccess={handleLoginSuccess} // Passing the success handler to the modal
-                      />
-                
-                      {/* Modal Register */}
-                      <RegisterModal isOpen={isRegisterModalOpen} toggleModal={toggleRegisterModal} switchToLogin={switchToLogin} />
+            {/* Modal Login */}
+            <LoginModal
+                isOpen={isModalOpen}
+                toggleModal={toggleModal}
+                switchToRegister={switchToRegister}
+                onLoginSuccess={handleLoginSuccess}
+            />
+
+            {/* Modal Register */}
+            <RegisterModal isOpen={isRegisterModalOpen} toggleModal={toggleRegisterModal} switchToLogin={switchToLogin} />
         </div>
     );
 }

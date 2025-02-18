@@ -1,20 +1,19 @@
 'use client'
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 export default function LoginModal({
   isOpen,
   toggleModal,
   switchToRegister,
+  onLoginSuccess,
 }: {
   isOpen: boolean;
   toggleModal: () => void;
   switchToRegister: () => void;
+  onLoginSuccess: () => void;
 }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const router = useRouter()
 
   if (!isOpen) return null;
 
@@ -37,6 +36,7 @@ export default function LoginModal({
       setEmail('')
       setPassword('')
       toggleModal();
+      onLoginSuccess();
       window.location.reload();
     } else {
       alert(data.message);

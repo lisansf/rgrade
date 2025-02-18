@@ -3,8 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import Loading from "@/app/Components/Loading";
-
+import { LoadingComponent } from "@/app/Components/Status";
 interface Post {
     title: string;
     content: string;
@@ -73,7 +72,7 @@ export default function PostSlug() {
 
     // **Jika postingan belum dimuat**
     if (!post) {
-        return <Loading />;
+        return <LoadingComponent />;
     }
 
     // **Render detail postingan jika ditemukan**

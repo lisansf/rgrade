@@ -7,20 +7,23 @@ export async function GET(request: Request) {
         await connectDB();
 
         const { searchParams } = new URL(request.url);
-        const author = searchParams.get("author"); // Ambil username dari query params
+        const author = searchParams.get("username"); // Ambil username dari query params
 
-        let query = {};
-        if (author) {
-            query = { author }; // Cari berdasarkan username
+        const query: Partial<{ author: string }> = {};
+
+        if (author !== null) {
+            query.author = author; // Cari berdasarkan username
         }
 
-        const posts = await Post.find(query);
+        const posts = await Post.find(query)
+            .sort({ createdAt: -1 }) // Urutkan berdasarkan tanggal terbaru
+            .lean(); // Mengurangi overhead MongoDB agar respons lebih cepat
 
         return NextResponse.json(posts, { status: 200 });
     } catch (error) {
         console.error("Error fetching posts:", error);
         return NextResponse.json(
-            { message: "Failed to fetch posts", error },
+            { message: "Failed to fetch posts", error: error instanceof Error ? error.message : error },
             { status: 500 }
         );
     }
@@ -60,6 +63,81 @@ export async function POST(request: Request) {
         console.error("Error creating post:", error);
         return NextResponse.json(
             { message: "Error creating post", error },
+            { status: 500 }
+        );
+    }
+}
+
+export async function DELETE(request: Request) {
+    try {
+        await connectDB();
+
+        const { searchParams } = new URL(request.url);
+        const postId = searchParams.get("id"); // Ambil ID dari query params
+
+        if (!postId) {
+            return NextResponse.json(
+                { message: "Post ID is required" },
+                { status: 400 }
+            );
+        }
+
+        const deletedPost = await Post.findByIdAndDelete(postId);
+
+        if (!deletedPost) {
+            return NextResponse.json(
+                { message: "Post not found" },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json(
+            { message: "Post deleted successfully" },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        return NextResponse.json(
+            { message: "Failed to delete post", error: error instanceof Error ? error.message : error },
+            { status: 500 }
+        );
+    }
+}
+
+export async function PUT(request: Request) {
+    try {
+        await connectDB();
+
+        const { id, title, content, images } = await request.json(); // Ambil data dari body
+
+        if (!id) {
+            return NextResponse.json(
+                { message: "Post ID is required" },
+                { status: 400 }
+            );
+        }
+
+        const updatedPost = await Post.findByIdAndUpdate(
+            id,
+            { title, content, images },
+            { new: true, runValidators: true } // Mengembalikan post yang sudah diperbarui
+        );
+
+        if (!updatedPost) {
+            return NextResponse.json(
+                { message: "Post not found" },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json(
+            { message: "Post updated successfully", post: updatedPost },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error("Error updating post:", error);
+        return NextResponse.json(
+            { message: "Failed to update post", error: error instanceof Error ? error.message : error },
             { status: 500 }
         );
     }

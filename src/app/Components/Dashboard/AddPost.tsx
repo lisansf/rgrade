@@ -35,6 +35,7 @@ export default function AddPost() {
                 setTitle('');
                 setContent('');
                 setImageUrl([]);
+                window.location.reload()
             } else {
                 alert(data.message || 'Failed to submit post');
             }
@@ -67,22 +68,22 @@ export default function AddPost() {
                 {({ open, isLoading }) => {
                     return (
                         <>
-                        <div className="pt-3 px-3 bg-gray-100">
-                            {isLoading ? (
-                                <button
-                                    className="p-2 bg-red-500"
-                                >
-                                    Please wait...
-                                </button>
-                            ) : (
-                                <button
-                                    onClick={() => open()}
-                                    className="p-2 py-10 w-full bg-gray-50 border-2 border-gray-400 text-gray-400"
-                                >
-                                    Upload an Image
-                                </button>
-                            )}
-                        </div>
+                            <div className="pt-3 px-3 bg-gray-100">
+                                {isLoading ? (
+                                    <button
+                                        className="p-2 bg-red-500"
+                                    >
+                                        Please wait...
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => open()}
+                                        className="p-2 py-10 w-full bg-gray-50 border-2 border-gray-400 text-gray-400"
+                                    >
+                                        Upload an Image
+                                    </button>
+                                )}
+                            </div>
                         </>
                     );
                 }}

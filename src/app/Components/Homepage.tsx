@@ -1,84 +1,129 @@
+'use client';
+import { useEffect, useState } from 'react';
+import { LoadingComponent, ErrorComponent } from '@/app/Components/Status';
+
+interface Post {
+    _id: string;
+    title: string;
+    content: string;
+    author: string;
+    images: string[];
+}
+
 export default function Landingpage() {
+    const [posts, setPosts] = useState<Post[]>([]); // Tambahkan tipe array Post
+    const [isLoading, setIsLoading] = useState(true);
+    const [isError, setIsError] = useState('');
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const response = await fetch('/api/post', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch posts');
+                }
+
+                const data: Post[] = await response.json(); // Berikan tipe untuk respons data
+                console.log(data)
+                setPosts(data);
+            } catch (err: unknown) {
+                if (err instanceof Error) {
+                    setIsError(err.message);
+                } else {
+                    setIsError('unknown Error!')
+                }
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchPosts();
+    }, []);
+
+    if (isLoading) {
+        return <LoadingComponent />;
+    }
+
+    if (isError) {
+        return <ErrorComponent msg={`Error: ${isError}`} />;
+    }
+
     return (
         <>
-            {/* Wrapper Section for Article and Guide */}
             <div className="flex gap-8 w-full">
-
-                {/* Article Section */}
+                {/* Wrapper Section for Article and Guide */}
                 <section className="relative flex gap-8 flex-wrap w-[856px]">
-                    {/* Artikel 1 dan 2 */}
                     <div className="flex gap-8 w-full">
                         {/* Artikel 1 */}
-                        <div className="relative w-[500px] h-[280px]">
-                            {/* kotak Artikel 1 */}
-                            <img
-                                src="https://via.placeholder.com/500x280"
-                                alt="Article Image"
-                                className="w-full h-[280px] object-cover"
-                            />
-                            {/* Judul artikel 1 */}
-                            <div className="absolute bottom-0 left-0 right-0 p-4">
-                                <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat. Duis hendrerit, erat vitae efficitur volutpat.
-                                </h3>
+                        {posts.length > 0 && (
+                            <div key={posts[0]._id} className="relative w-[500px] h-[280px]">
+                                <img
+                                    src={posts[0].images[0]}
+                                    alt="Article Image"
+                                    className="w-full h-[280px] object-cover"
+                                />
+                                <div className="absolute bottom-0 left-0 right-0 p-4">
+                                    <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
+                                        {posts[0].title}
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
-
+                        )}
                         {/* Artikel 2 */}
-                        <div className="flex flex-col items-center w-[337px]">
-                            {/* kotak Artikel 2 */}
-                            <img
-                                src="https://via.placeholder.com/337x189"
-                                alt="Article Image"
-                                className="w-full h-[189px] object-cover"
-                            />
-                            {/* Judul artikel 2 */}
-                            <div className="w-[337px] h-[90px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
+                        {posts.length > 1 && (
+                            <div key={posts[1]._id} className="flex flex-col items-center w-[337px]">
+                                <img
+                                    src={posts[1]?.images[0]}
+                                    alt="Article Image"
+                                    className="w-full h-[189px] object-cover"
+                                />
+                                <div className="w-[337px] h-[90px]">
+                                    <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
+                                        {posts[1].title}
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
-
-                    {/* Artikel 3 dan 4 berada di bawah Artikel 1 dan 2 */}
-                    <div className="flex gap-8 w-full mt-8">
+                    <div className="flex gap-8 w-full">
                         {/* Artikel 3 */}
-                        <div className="relative overflow-hidden w-[500px] h-[280px]">
-                            {/* kotak Artikel 3 */}
-                            <img
-                                src="https://via.placeholder.com/500x280"
-                                alt="Article Image"
-                                className="w-full h-[280px] object-cover"
-                            />
-                            {/* Judul artikel 3 */}
-                            <div className="absolute bottom-0 left-0 right-0 p-4">
-                                <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat. Duis hendrerit, erat vitae efficitur volutpat.
-                                </h3>
+                        {posts.length > 0 && (
+                            <div key={posts[2]._id} className="relative w-[500px] h-[280px]">
+                                <img
+                                    src={posts[2]?.images[0] || "https://via.placeholder.com/337x189"}
+                                    alt="Article Image"
+                                    className="w-full h-[280px] object-cover"
+                                />
+                                <div className="absolute bottom-0 left-0 right-0 p-4">
+                                    <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
+                                        {posts[2].title}
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
-
+                        )}
                         {/* Artikel 4 */}
-                        <div className="flex flex-col items-center w-[337px] relative" style={{ top: '-50px' }}>
-                            {/* kotak Artikel 4 */}
-                            <img
-                                src="https://via.placeholder.com/337x189"
-                                alt="Article Image"
-                                className="w-full h-[189px] object-cover"
-                            />
-                            {/* Judul artikel 4 */}
-                            <div className="w-[337px] h-[90px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
+                        {posts.length > 1 && (
+                            <div key={posts[3]._id} className="flex flex-col items-center w-[337px]">
+                                <img
+                                    src={posts[3]?.images[0] || "https://via.placeholder.com/337x189"}
+                                    alt="Article Image"
+                                    className="w-full h-[189px] object-cover"
+                                />
+                                <div className="w-[337px] h-[90px]">
+                                    <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
+                                        {posts[3].title}
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </section>
-
-
-
 
                 {/* Guide Section */}
                 <section className="relative py-5 flex justify-start w-[405px]">
@@ -91,83 +136,20 @@ export default function Landingpage() {
                     <div className="flex flex-col gap-2 pt-4">
 
                         {/* Guide 1 */}
-                        <div className="flex flex-row items-start gap-4">
-                            {/* Kotak Guide 1 */}
-                            <img
-                                src="https://via.placeholder.com/173x97"
-                                alt="Article Image"
-                                className="w-[173px] h-[97px] object-cover" />
-                            {/* Judul Guide 1 */}
-                            <div className="flex-grow w-[270px] h-[97px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
+                        {posts.slice(0, 5).map((post, index) => (
+                            <div key={index} className="flex flex-row items-start gap-4">
+                                <img
+                                    src={post.images[0] || "https://via.placeholder.com/173x97"}
+                                    alt="Article Image"
+                                    className="w-[173px] h-[97px] object-cover"
+                                />
+                                <div className="flex-grow h-[97px]">
+                                    <h3 className="text-lg font-semibold text-black line-clamp-2 overflow-hidden w-[500px]">
+                                        {post.title}
+                                    </h3>
+                                </div>
                             </div>
-                        </div>
-
-                        {/* Guide 2 */}
-                        <div className="flex flex-row items-start gap-4">
-                            {/* Kotak Guide 2 */}
-                            <img
-                                src="https://via.placeholder.com/173x97"
-                                alt="Article Image"
-                                className="w-[173px] h-[97px] object-cover"
-                            />
-                            {/* Judul Guide 2 */}
-                            <div className="flex-grow h-[97px] w-[270px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
-                            </div>
-                        </div>
-
-                        {/* Guide 3 */}
-                        <div className="flex flex-row items-start gap-4">
-                            {/* Kotak Guide 2 */}
-                            <img
-                                src="https://via.placeholder.com/173x97"
-                                alt="Article Image"
-                                className="w-[173px] h-[97px] object-cover" />
-
-                            {/* Judul Guide 3 */}
-                            <div className="flex-grow h-[97px] w-[270px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
-                            </div>
-                        </div>
-
-                        {/* Guide 4 */}
-                        <div className="flex flex-row items-start gap-4">
-                            {/* Kotak Guide 4 */}
-                            <img
-                                src="https://via.placeholder.com/173x97"
-                                alt="Article Image"
-                                className="w-[173px] h-[97px] object-cover" />
-
-                            {/* Judul Guide 4 */}
-                            <div className="flex-grow h-[97px] w-[270px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
-                            </div>
-                        </div>
-
-                        {/* Guide 5 */}
-                        <div className="flex flex-row items-start gap-4">
-                            {/* Kotak Guide 5 */}
-                            <img
-                                src="https://via.placeholder.com/173x97"
-                                alt="Article Image"
-                                className="w-[173px] h-[97px] object-cover" />
-
-                            {/* Judul Guide 5 */}
-                            <div className="flex-grow h-[97px] w-[270px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
-                            </div>
-                        </div>
+                        ))}
 
                     </div>
                 </section>
@@ -198,84 +180,20 @@ export default function Landingpage() {
 
                     {/* Container Trending */}
                     <div className="flex flex-col gap-2 pt-4">
-                        {/* Trending 1 */}
-                        <div className="flex flex-row items-start gap-4">
-                            {/* Kotak Trending 1 */}
-                            <img
-                                src="https://via.placeholder.com/173x97"
-                                alt="Article Image"
-                                className="w-[173px] h-[97px] object-cover"
-                            />
-                            {/* Judul Trending 1 */}
-                            <div className="flex-grow h-[97px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-2 overflow-hidden w-[500px]">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
-                            </div>
-                        </div>
-
-                        {/* Trending 2 */}
-                        <div className="flex flex-row items-start gap-4">
-                            {/* Kotak Trending 2 */}
-                            <img
-                                src="https://via.placeholder.com/173x97"
-                                alt="Article Image"
-                                className="w-[173px] h-[97px] object-cover"
-                            />
-                            {/* Judul Trending 2 */}
-                            <div className="flex-grow h-[97px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-2 overflow-hidden w-[500px]">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
-                            </div>
-                        </div>
-
-                        {/* Trending 3 */}
-                        <div className="flex flex-row items-start gap-4">
-                            {/* Kotak Trending 3 */}
-                            <img
-                                src="https://via.placeholder.com/173x97"
-                                alt="Article Image"
-                                className="w-[173px] h-[97px] object-cover"
-                            />
-                            {/* Judul Trending 3 */}
-                            <div className="flex-grow h-[97px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-2 overflow-hidden w-[500px]">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
-                            </div>
-                        </div>
-
-                        {/* Trending 4 */}
-                        <div className="flex flex-row items-start gap-4">
-                            {/* Kotak Trending 4 */}
-                            <img
-                                src="https://via.placeholder.com/173x97"
-                                alt="Article Image"
-                                className="w-[173px] h-[97px] object-cover"
-                            />
-                            {/* Judul Trending 4 */}
-                            <div className="flex-grow h-[97px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-2 overflow-hidden w-[500px]">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
-                            </div>
-                        </div>
-
-                        {/* Trending 5 */}
-                        <div className="flex flex-row items-start gap-4">
-                            {/* Kotak Trending 5 */}
-                            <img
-                                src="https://via.placeholder.com/173x97"
-                                alt="Article Image"
-                                className="w-[173px] h-[97px] object-cover"
-                            />
-                            {/* Judul Trending 5 */}
-                            <div className="flex-grow h-[97px]">
-                                <h3 className="text-lg font-semibold text-black line-clamp-2 overflow-hidden w-[500px]">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras porttitor eros sed ultrices condimentum. Aliquam erat volutpat.
-                                </h3>
-                            </div>
+                        {/* Trending Section */}
+                        <div className="flex flex-col gap-2 pt-4">
+                            {posts.slice(0, 5).map((post, index) => (
+                                <div key={index} className="flex flex-row items-start gap-4">
+                                    <img src={post.images[0] || "https://via.placeholder.com/173x97"} alt="Article Image"
+                                        className="w-[173px] h-[97px] object-cover"
+                                    />
+                                    <div className="flex-grow h-[97px]">
+                                        <h3 className="text-lg font-semibold text-black line-clamp-2 overflow-hidden w-[500px]">
+                                            {post.title}
+                                        </h3>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
