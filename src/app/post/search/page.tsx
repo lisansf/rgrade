@@ -13,11 +13,17 @@ interface Post {
 
 export default function SearchPage() {
     const searchParams = useSearchParams();
-    const query: string = searchParams.get("q") ?? ""; // ✅ Pastikan `query` selalu string
-
+    const [query, setQuery] = useState<string | null>(null);
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    // 🔍 Ambil query dari URL hanya di client-side
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setQuery(searchParams.get("q") ?? "");
+        }
+    }, [searchParams]);
 
     useEffect(() => {
         if (!query) return;
@@ -45,7 +51,7 @@ export default function SearchPage() {
     return (
         <div className="max-w-3xl mx-auto p-6">
             <h1 className="text-3xl font-bold text-center mb-4">
-                Search Results for {query}
+                {query ? `Search Results for "${query}"` : "Enter a search term"}
             </h1>
 
             {loading && <p className="text-center text-gray-500">Loading...</p>}
