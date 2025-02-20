@@ -64,7 +64,7 @@ export default function Landingpage() {
                         {posts.length > 0 && (
                             <div key={posts[0]._id} className="relative w-[500px] h-[280px]">
                                 <img
-                                    src={posts[0].images[0]}
+                                    src={posts[0].images[0] || "https://placehold.co/337x189"}
                                     alt="Article Image"
                                     className="w-full h-[280px] object-cover"
                                 />
@@ -79,7 +79,7 @@ export default function Landingpage() {
                         {posts.length > 1 && (
                             <div key={posts[1]._id} className="flex flex-col items-center w-[337px]">
                                 <img
-                                    src={posts[1]?.images[0]}
+                                    src={posts[1]?.images[0] || "https://placehold.co/337x189"}
                                     alt="Article Image"
                                     className="w-full h-[189px] object-cover"
                                 />
@@ -96,7 +96,7 @@ export default function Landingpage() {
                         {posts.length > 0 && (
                             <div key={posts[2]._id} className="relative w-[500px] h-[280px]">
                                 <img
-                                    src={posts[2]?.images[0] || "https://via.placeholder.com/337x189"}
+                                    src={posts[2]?.images[0] || "https://placehold.co/337x189"}
                                     alt="Article Image"
                                     className="w-full h-[280px] object-cover"
                                 />
@@ -111,7 +111,7 @@ export default function Landingpage() {
                         {posts.length > 1 && (
                             <div key={posts[3]._id} className="flex flex-col items-center w-[337px]">
                                 <img
-                                    src={posts[3]?.images[0] || "https://via.placeholder.com/337x189"}
+                                    src={posts[3]?.images[0] || "https://placehold.co/337x189"}
                                     alt="Article Image"
                                     className="w-full h-[189px] object-cover"
                                 />
@@ -139,7 +139,7 @@ export default function Landingpage() {
                         {posts.slice(0, 5).map((post, index) => (
                             <div key={index} className="flex flex-row items-start gap-4">
                                 <img
-                                    src={post.images[0] || "https://via.placeholder.com/173x97"}
+                                    src={post.images[0] || "https://placehold.co/173x97"}
                                     alt="Article Image"
                                     className="w-[173px] h-[97px] object-cover"
                                 />
@@ -184,7 +184,7 @@ export default function Landingpage() {
                         <div className="flex flex-col gap-2 pt-4">
                             {posts.slice(0, 5).map((post, index) => (
                                 <div key={index} className="flex flex-row items-start gap-4">
-                                    <img src={post.images[0] || "https://via.placeholder.com/173x97"} alt="Article Image"
+                                    <img src={post.images[0] || "https://placehold.co/173x97"} alt="Article Image"
                                         className="w-[173px] h-[97px] object-cover"
                                     />
                                     <div className="flex-grow h-[97px]">
