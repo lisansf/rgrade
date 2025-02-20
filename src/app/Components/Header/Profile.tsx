@@ -74,7 +74,7 @@ export default function Profile() {
                 className="flex items-center"
             >
                 <img
-                    src={userData.img}
+                    src={userData.img || "https://placehold.co/60x60"}
                     alt={`Pic of ${userData.username}`}
                     className="w-[50px] h-[50px] rounded-full "
                 />
@@ -102,7 +102,7 @@ export default function Profile() {
                     <>
                         <div className="flex items-center gap-2 p-3 border-b border-gray-300">
                             <img
-                                src={userData.img}
+                                src={userData.img || "https://placehold.co/60x60"}
                                 alt={`Pic of ${userData.username}`}
                                 className="w-[50px] h-[50px] rounded-full"
                             />

@@ -60,7 +60,7 @@ export default function Latest() {
                 >
                   {/* Artikel Box */}
                   <div className="h-[478px] w-full bg-gray-300 flex items-start justify-start p-4 rounded-t-lg">
-                    <p><img src={post.images} /></p>
+                    <p><img src={post.images || "https://placehold.co/857x400"} /></p>
                   </div>
                   {/* Judul Artikel */}
                   <div className="p-4 w-full bg-white rounded-b-lg">

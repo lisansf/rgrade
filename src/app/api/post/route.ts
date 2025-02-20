@@ -7,21 +7,20 @@ export async function GET(request: Request) {
         await connectDB();
 
         const { searchParams } = new URL(request.url);
-        const author = searchParams.get("username"); // Ambil username dari query params
+        const search = searchParams.get("s") || ""; // Ambil query pencarian
 
-        const query: Partial<{ author: string }> = {};
+        const query: Partial<Record<string, unknown>> = {};
 
-        if (author !== null) {
-            query.author = author; // Cari berdasarkan username
+        if (search) {
+            query.title = { $regex: search, $options: "i" }; // 🔍 Case-insensitive search untuk title
         }
 
         const posts = await Post.find(query)
-            .sort({ createdAt: -1 }) // Urutkan berdasarkan tanggal terbaru
-            .lean(); // Mengurangi overhead MongoDB agar respons lebih cepat
+            .sort({ createdAt: -1 })
+            .lean();
 
         return NextResponse.json(posts, { status: 200 });
     } catch (error) {
-        console.error("Error fetching posts:", error);
         return NextResponse.json(
             { message: "Failed to fetch posts", error: error instanceof Error ? error.message : error },
             { status: 500 }
