@@ -84,7 +84,7 @@ export default function LoginModal({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-[347px] p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
+                className="w-[347px] text-black p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
               />
               <input
                 type="password"
@@ -92,7 +92,7 @@ export default function LoginModal({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-[347px] p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
+                className="w-[347px] text-black p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
               />
               <p className="text-gray-400">Forgot Password?</p>
               <button

@@ -13,6 +13,9 @@ export default function RegisterModal({
   switchToLogin: () => void;
   onClose: () => void;
 }) {
+  const [fullname, setFullName] = useState('');
+  const [dob, setDOB] = useState('')
+  const [gender, setGender] = useState('')
   const [email, setEmail] = useState('');
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -99,7 +102,7 @@ export default function RegisterModal({
                   value={username}
                   onChange={(e) => setUserName(e.target.value)}
                   required
-                  className="w-[347px] p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
+                  className="w-[347px] text-black p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
                 />
                 <input
                   type="email"
@@ -107,7 +110,7 @@ export default function RegisterModal({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-[347px] p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
+                  className="w-[347px] text-black p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
                 />
                 <input
                   type="password"
@@ -115,7 +118,7 @@ export default function RegisterModal({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-[347px] p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
+                  className="w-[347px] text-black p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
                 />
                 <input
                   type="password"
@@ -123,11 +126,11 @@ export default function RegisterModal({
                   value={confirmPass}
                   onChange={(e) => setConfirmPass(e.target.value)}
                   required
-                  className="w-[347px] p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
+                  className="w-[347px] text-black p-2 border bg-[#EFEFEF] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ECB365]"
                 />
                 <button
                   type="submit"
-                  className="w-[347px] bg-[#ECB365] text-white px-4 py-2 rounded-lg hover:bg-[#d8a554] transition-colors"
+                  className="w-[347px] text-black bg-[#ECB365] text-white px-4 py-2 rounded-lg hover:bg-[#d8a554] transition-colors"
                 >
                   Register
                 </button>
@@ -161,17 +164,23 @@ export default function RegisterModal({
               <input
                 type="text"
                 placeholder="Full Name"
-                className="w-full p-2 border bg-[#EFEFEF] rounded-md"
+                className="w-full text-black p-2 border bg-[#EFEFEF] rounded-md"
+                value={fullname}
+                onChange={(e) => setFullName(e.target.value)}
                 required
               />
               <input
                 type="date"
                 placeholder="Date of Birth"
-                className="w-full p-2 border bg-[#EFEFEF] rounded-md"
+                className="w-full text-black p-2 border bg-[#EFEFEF] rounded-md"
+                value={dob}
+                onChange={(e) => setDOB(e.target.value)}
                 required
               />
               <select
-                className="w-full p-2 border bg-[#EFEFEF] rounded-md"
+                className="w-full text-black p-2 border bg-[#EFEFEF] rounded-md"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
                 required
               >
                 <option value="">Select Gender</option>
@@ -181,12 +190,12 @@ export default function RegisterModal({
               </select>
               <input
                 type="file"
-                className="w-full p-2 border bg-[#EFEFEF] rounded-md"
+                className="w-full text-black p-2 border bg-[#EFEFEF] rounded-md"
                 required
               />
               <button
                 type="submit"
-                className="w-full bg-[#ECB365] text-white px-4 py-2 rounded-lg"
+                className="w-full text-black bg-[#ECB365] text-white px-4 py-2 rounded-lg"
               >
                 Save Profile
               </button>
