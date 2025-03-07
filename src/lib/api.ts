@@ -59,7 +59,7 @@ export async function fetchPostsByCategory(category?: string): Promise<Post[]> {
     }
 }
 
-// * Add posts
+// * ✅ Add posts
 export async function addPost(images: string[], title: string, content: string, category: string[], author: string) {
     try {
         const res = await fetch('/api/post', {
