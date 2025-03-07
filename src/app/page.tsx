@@ -1,5 +1,5 @@
 import Homepage from "@/app/Components/Homepage";
-import Ads from "@/app/Components/Ads";
+import Ads from "@/app/Components/ads";
 
 export default function Home() {
   return (

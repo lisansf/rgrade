@@ -28,7 +28,7 @@
 //     )
 // }
 
-export default function Ads() {
+export default function ads() {
   const adBoxes = Array(4).fill(0);
 
   return (
