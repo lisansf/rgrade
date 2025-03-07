@@ -1,5 +1,8 @@
 'use client'
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+
+import { loginUser } from '@/lib/api';
 
 export default function LoginModal({
   isOpen,
@@ -16,33 +19,29 @@ export default function LoginModal({
 }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const router = useRouter()
 
   if (!isOpen) return null;
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-    if (response.ok) {
+    const credentials = { email, password };
+    const data = await loginUser(credentials);
+    if (data) {
       sessionStorage.setItem('username', data.username);
       sessionStorage.setItem('role', data.role);
       alert(data.message);
-      setEmail('')
-      setPassword('')
+      setEmail('');
+      setPassword('');
       toggleModal();
       onLoginSuccess();
       onClose();
-      window.location.reload();
+      router.refresh()
+
+      onLoginSuccess(); // ✅ Panggil fungsi setelah login sukses
     } else {
-      alert(data.message);
+      alert("Login gagal. Cek kembali email dan password.");
     }
   }
 

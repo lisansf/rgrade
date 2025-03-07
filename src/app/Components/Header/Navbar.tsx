@@ -42,7 +42,7 @@ export default function Home() {
 
   const handleLoginSuccess = () => {
     setIsModalOpen(false); // ✅ Tutup modal login
-    window.location.reload(); // ✅ Refresh halaman agar session terupdate
+    router.refresh(); // ✅ Refresh halaman agar session terupdate
   };
 
   return (

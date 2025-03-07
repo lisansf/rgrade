@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import connectDB from "@/app/config/connectDB";
-import User from "@/app/models/user/User";
+import connectDB from "@/lib/connectDB";
+import User from "@/lib/models/User";
 
 //? Login Authentication
 export async function POST(request: Request) {

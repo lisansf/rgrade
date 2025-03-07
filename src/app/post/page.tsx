@@ -1,14 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { LoadingComponent, ErrorComponent } from '../Components/Status';
 import Link from 'next/link';
 
-interface Post {
-    _id: string;
-    title: string;
-    content: string;
-    author: string;
-}
+import { LoadingComponent, ErrorComponent } from '../Components/Status';
+import { fetchPosts } from '@/lib/api';
+import { Post } from '@/lib/types';
 
 export default function Posts() {
     const [posts, setPosts] = useState<Post[]>([]); // Tambahkan tipe array Post
@@ -30,20 +26,9 @@ export default function Posts() {
     // };
 
     useEffect(() => {
-        const fetchPosts = async () => {
+        const getPosts = async () => {
             try {
-                const response = await fetch('/api/post', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch posts');
-                }
-
-                const data: Post[] = await response.json(); // Berikan tipe untuk respons data
+                const data: Post[] = await fetchPosts(); // Berikan tipe untuk respons data
                 setPosts(data);
             } catch (err: unknown) {
                 if (err instanceof Error) {
@@ -56,7 +41,7 @@ export default function Posts() {
             }
         };
 
-        fetchPosts();
+        getPosts();
     }, []);
 
     if (loading) {

@@ -2,10 +2,10 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { LoadingComponent } from '../Components/Status';
-import DashboardMenu from "@/app/Components/Dashboard/Dashboardmenu";
-import MyPosts from "../Components/Dashboard/MyPosts";
-import AddPost from "../Components/Dashboard/AddPost";
+import { LoadingComponent } from '@/app/Components/Status';
+import DashboardMenu from "@/app/dashboard/Components/Dashboardmenu";
+import MyPosts from "@/app/dashboard/Components/MyPosts";
+import AddPost from "@/app/dashboard/Components/AddPost";
 
 function CDashboard() {
     const [username, setUsername] = useState<string | null>(null);

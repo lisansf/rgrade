@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import connectDB from "@/app/config/connectDB";
-import Post from "@/app/models/post/Post";
+import connectDB from "@/lib/connectDB";
+import Post from "@/lib/models/Post";
 
 export async function GET(request: Request) {
     try {
@@ -8,11 +8,16 @@ export async function GET(request: Request) {
 
         const { searchParams } = new URL(request.url);
         const search = searchParams.get("s") || ""; // Ambil query pencarian
+        const category = searchParams.get("category") || ""; // 🏷️ Query filter kategori
 
         const query: Partial<Record<string, unknown>> = {};
 
         if (search) {
             query.title = { $regex: search, $options: "i" }; // 🔍 Case-insensitive search untuk title
+        }
+
+        if (category) {
+            query.category = category; // 🏷️ Filter berdasarkan kategori
         }
 
         const posts = await Post.find(query)
@@ -30,10 +35,10 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     try {
-        const { title, content, images, author } = await request.json();
+        const { title, content, images, category, author } = await request.json();
 
         // Validasi input
-        if (!title || !content || !author) {
+        if (!title || !content || !author || !category || !images) {
             return NextResponse.json(
                 { message: "Title, Content, and Author ID are required" },
                 { status: 400 }
@@ -47,6 +52,7 @@ export async function POST(request: Request) {
             images: images || [],
             title,
             content,
+            category: category || [],
             author, // Pastikan authorId tersimpan
         });
 

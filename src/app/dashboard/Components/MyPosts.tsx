@@ -1,47 +1,36 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ErrorComponent, LoadingComponent } from "../Status";
 
-interface Post {
-    _id: string;
-    images: string[];
-    title: string;
-    content: string;
-    author: string;
-    createdAt: Date;
-}
+// * Library
+import { Post } from "@/lib/types";
+import { fetchPosts, deletePost } from "@/lib/api";
+
+// * Components
+import { ErrorComponent, LoadingComponent } from "@/app/Components/Status";
 
 export default function MyPosts() {
+    // * State
     const [showPosts, setShowPosts] = useState<Post[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState("");
     const [deleting, setDeleting] = useState<string | null>(null);
-    const router = useRouter();
+    const router = useRouter(); // * Router
 
     useEffect(() => {
-        const getPost = async () => {
+        const getPost = async () => { // * Mengambil semua Post
             try {
-                const response = await fetch(`/api/post`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
+                const data: Post[] = await fetchPosts(); // * Fetching Posts
+                const currentUser = sessionStorage.getItem("username"); // * Get the username from session storage
+                if (!currentUser) throw new Error("User not found in session"); // * When username aren't in session storage
 
-                if (!response.ok) {
-                    throw new Error("Failed to fetch posts");
-                }
-
-                const data: Post[] = await response.json();
-                const currentUser = sessionStorage.getItem("username");
-                const filteredPosts = data.filter((post) => post.author === currentUser);
+                const filteredPosts = data.filter((post) => post.author === currentUser); // * It's filtered post when post author is similar with username / currentUser variabel
 
                 setShowPosts(filteredPosts);
             } catch (error) {
-                console.error("Error fetching posts:", error);
+                console.error(error instanceof Error ? `Error fetching posts: ${error.message}` : "Unknown error");
                 setIsError(true);
-                setErrorMessage(error instanceof Error ? error.message : "Unknown error");
+                setErrorMessage(error instanceof Error ? `Error fetching posts: ${error.message}` : "Unknown error");
             } finally {
                 setIsLoading(false);
             }
@@ -50,24 +39,19 @@ export default function MyPosts() {
         getPost();
     }, []);
 
-    // 🗑️ Fungsi untuk menghapus post
+    // * 🗑️ Fungsi untuk menghapus post
     const handleDelete = async (postId: string) => {
         if (!window.confirm("Are you sure you want to delete this post?")) return;
         setDeleting(postId);
 
         try {
-            const response = await fetch(`/api/post?id=${postId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+            const success = await deletePost(postId); // ✅ Pakai fungsi API
 
-            if (!response.ok) {
+            if (success) {
+                setShowPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+            } else {
                 throw new Error("Failed to delete post");
             }
-
-            setShowPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
         } catch (error) {
             console.error("Error deleting post:", error);
             alert("Error deleting post");
@@ -101,14 +85,14 @@ export default function MyPosts() {
                                 <tr key={post._id} className="border-b">
                                     <td className="p-2">
                                         <img
-                                            src={post.images[0] || "https://via.placeholder.com/80"}
+                                            src={post.images[0] || "https://placehold.co/80"}
                                             alt="Post Thumbnail"
                                             className="h-[80px] w-[80px] object-cover rounded-lg"
                                         />
                                     </td>
                                     <td className="font-bold p-2">{post.title}</td>
                                     <td className="text-center p-2">
-                                        {new Date(post.createdAt).toLocaleDateString()}
+                                        {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "No Date"}
                                     </td>
                                     <td className="text-center p-2">
                                         <button

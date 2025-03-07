@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 
+import { RegisterUser } from "@/lib/api";
+import { RegisterRequest } from "@/lib/types";
+
 export default function RegisterModal({
   isOpen,
   toggleModal,
@@ -32,16 +35,14 @@ export default function RegisterModal({
       return;
     }
 
-    const response = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, username, password }),
-    });
+    const credentials: RegisterRequest = {
+      username,
+      email,
+      password,
+    };
 
-    const data = await response.json();
-    if (response.ok) {
+    const data = await RegisterUser(credentials);
+    if (data && data.message === "User registered successfully!") {
       alert(data.message); // Signup success
       setEmail('');
       setUserName('');
@@ -50,7 +51,7 @@ export default function RegisterModal({
       setProfileModalOpen(true); // Buka modal profil
       onClose();
     } else {
-      alert(data.message); // Error message
+      alert(data?.message || "Registrasi gagal. Coba lagi!"); // Error message
     }
   };
 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
+import { useRouter } from "next/navigation";
 
 export default function Profile() {
     const [dropDown, setDropDown] = useState(false);
@@ -18,7 +19,7 @@ export default function Profile() {
         role: "",
     });
 
-    const defaultImg = "/person.png";
+    const router = useRouter();
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -59,13 +60,13 @@ export default function Profile() {
         if (typeof window !== "undefined") {
             const username = sessionStorage.getItem("username") || "";
             const name = sessionStorage.getItem("name") || "";
-            const img = sessionStorage.getItem("img") || defaultImg;
+            const img = sessionStorage.getItem("img") || "/person.png";
             const role = sessionStorage.getItem("role") || "";
 
             setIsLoggedIn(!!username);
             setUserData({ username, name, img, role });
         }
-    }, []);
+    }, [router]);
 
     return (
         <div className="relative">
@@ -74,7 +75,7 @@ export default function Profile() {
                 className="flex items-center"
             >
                 <img
-                    src={userData.img || "https://placehold.co/60x60"}
+                    src={userData.img || "/person.png"}
                     alt={`Pic of ${userData.username}`}
                     className="w-[50px] h-[50px] rounded-full "
                 />
@@ -124,7 +125,9 @@ export default function Profile() {
                             <button
                                 onClick={() => {
                                     sessionStorage.clear();
-                                    window.location.reload();
+                                    setUserData({ username: "", name: "", img: "", role: "" });
+                                    setIsLoggedIn(false);
+                                    router.refresh();
                                 }}
                                 className="text-red-500 hover:text-red-600"
                             >
@@ -144,11 +147,16 @@ export default function Profile() {
                 toggleModal={toggleModal}
                 switchToRegister={switchToRegister}
                 onLoginSuccess={handleLoginSuccess}
-                onClose={() => setShowLogin(false)}
+                onClose={toggleModal}
             />
 
             {/* Modal Register */}
-            <RegisterModal isOpen={isRegisterModalOpen} toggleModal={toggleRegisterModal} switchToLogin={switchToLogin} onClose={() => setShowRegister(false)} />
+            <RegisterModal
+                isOpen={isRegisterModalOpen}
+                toggleModal={toggleRegisterModal}
+                switchToLogin={switchToLogin}
+                onClose={toggleRegisterModal}
+            />
         </div>
     );
 }

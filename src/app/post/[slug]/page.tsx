@@ -4,11 +4,8 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { LoadingComponent } from "@/app/Components/Status";
-interface Post {
-    title: string;
-    content: string;
-    author: string;
-}
+import { fetchPosts } from "@/lib/api";
+import { Post } from "@/lib/types";
 
 export default function PostSlug() {
     const [post, setPost] = useState<Post | null>(null);
@@ -20,20 +17,9 @@ export default function PostSlug() {
     useEffect(() => {
         if (!slug) return; // Jangan fetch jika slug tidak ada
 
-        const fetchPost = async () => {
+        const getPost = async () => {
             try {
-                const response = await fetch("/api/post", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error("Failed to fetch posts");
-                }
-
-                const data: Post[] = await response.json();
+                const data: Post[] = await fetchPosts();
 
                 // Ubah slug menjadi format yang sama seperti judul (contoh: "ini-contoh" => "Ini Contoh")
                 const formattedTitle = slug.replace(/-/g, " ");
@@ -57,7 +43,7 @@ export default function PostSlug() {
             }
         };
 
-        fetchPost();
+        getPost();
     }, [slug]);
 
     // **Jika terjadi error**
@@ -80,6 +66,7 @@ export default function PostSlug() {
         <div className="w-full bg-white p-4 rounded-lg shadow-md">
             <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
             <p className="text-gray-500 mb-2">By {post.author}</p>
+            <p className="text-gray-500 mb-2">Category: {post.category.join(", ")}</p>
             <div className="text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: post.content }}></div>
         </div>
     );

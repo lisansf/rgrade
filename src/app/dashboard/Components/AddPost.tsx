@@ -1,41 +1,38 @@
 import { useState } from "react";
 import { CldUploadWidget } from 'next-cloudinary';
-import Tiptap from "../../Components/RichTextEditor/Tiptap";
+import Tiptap from "@/app/Components/RichTextEditor/Tiptap";
+import { useRouter } from "next/navigation";
+import { addPost } from "@/lib/api";
 
 export default function AddPost() {
+    // * State
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [category, setCategory] = useState<string[]>([]);
     const [images, setImageUrl] = useState<string[]>([]);
 
+    // * Router
+    const router = useRouter();
+
+    // * Pengiriman form postingan
     const sendForm = async (e: React.FormEvent) => {
         e.preventDefault();
         const author = sessionStorage.getItem("username")
 
-        if (!title) {
-            alert('Title is required!');
-            return;
-        }
-        if (!content) {
-            alert('Content is required!');
-            return;
-        }
-        if (!author) {
-            alert('author is required!');
-            return;
-        }
+        if (!title) return alert('Title is required!');
+        if (!content) return alert('Content is required!');
+        if (images.length < 2 || !images) return alert('Image is required! Need 2 Images Upload or More.');
+        if (category.length === 0) return alert('At least one category is required!');
+        if (!author) return alert('Author is required!');
         try {
-            const response = await fetch('/api/post', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ images, title, content, author }),
-            });
-            const data = await response.json();
-            if (response.ok) {
+            const data = await addPost(images, title, content, category, author);
+            if (data) {
                 alert('Post submitted successfully!');
                 setTitle('');
                 setContent('');
+                setCategory([]);
                 setImageUrl([]);
-                window.location.reload()
+                router.refresh()
             } else {
                 alert(data.message || 'Failed to submit post');
             }
@@ -45,6 +42,7 @@ export default function AddPost() {
         }
     };
 
+    // * Cloudinary Interface
     interface CloudinaryUploadResult {
         info: {
             url: string;
@@ -52,10 +50,19 @@ export default function AddPost() {
         };
     }
 
+    const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setCategory((prev) =>
+            prev.includes(value)
+                ? prev.filter((cat) => cat !== value) // ✅ Hapus jika sudah ada
+                : [...prev, value] // ✅ Tambahkan jika belum ada
+        );
+    };
+
     return (
         <>
             <CldUploadWidget
-                uploadPreset="veoidb_upload_preset"
+                uploadPreset="rgidb_upload_preset"
                 options={{
                     sources: ['local', 'url', 'camera', 'instagram', 'google_drive'],
                     maxFiles: 3,
@@ -106,6 +113,7 @@ export default function AddPost() {
                 })}
             </div>
             <form onSubmit={sendForm} className="flex flex-col gap-4 bg-gray-100 px-3 pt-3 text-grey-950">
+                {/* //* ✅ Input Judul */}
                 <label>
                     <input
                         type="text"
@@ -116,6 +124,30 @@ export default function AddPost() {
                         className="w-full p-2 bg-white border-gray-400 border-b border text-black"
                     />
                 </label>
+                {/* //* ✅ Checkbox untuk kategori */}
+                <div className="flex gap-2">
+                    <span className="font-semibold">Select Categories:</span>
+                    <label>
+                        <input type="checkbox" value="film" onChange={handleCategoryChange} checked={category.includes("film")} />
+                        &nbsp;Film & Series
+                    </label>
+                    <label>
+                        <input type="checkbox" value="games" onChange={handleCategoryChange} checked={category.includes("games")} />
+                        &nbsp;Games
+                    </label>
+                    <label>
+                        <input type="checkbox" value="music" onChange={handleCategoryChange} checked={category.includes("music")} />
+                        &nbsp;Music
+                    </label>
+                    <label>
+                        <input type="checkbox" value="art" onChange={handleCategoryChange} checked={category.includes("art")} />
+                        &nbsp;Art & Design
+                    </label>
+                    <label>
+                        <input type="checkbox" value="photography" onChange={handleCategoryChange} checked={category.includes("photography")} />
+                        &nbsp;Photography
+                    </label>
+                </div>
                 <Tiptap
                     onChange={setContent} />
                 <button type="submit" className="bg-[rgb(4_28_50)] p-2 text-white">ADD POST</button>

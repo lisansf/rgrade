@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { LoadingComponent, ErrorComponent } from '@/app/Components/Status';
+import { fetchPosts } from '@/lib/api';
 
 interface Post {
     _id: string;
@@ -16,20 +17,9 @@ export default function Landingpage() {
     const [isError, setIsError] = useState('');
 
     useEffect(() => {
-        const fetchPosts = async () => {
+        const getPosts = async () => {
             try {
-                const response = await fetch('/api/post', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch posts');
-                }
-
-                const data: Post[] = await response.json(); // Berikan tipe untuk respons data
+                const data: Post[] = await fetchPosts(); // Berikan tipe untuk respons data
                 console.log(data)
                 setPosts(data);
             } catch (err: unknown) {
@@ -43,7 +33,7 @@ export default function Landingpage() {
             }
         };
 
-        fetchPosts();
+        getPosts();
     }, []);
 
     if (isLoading) {

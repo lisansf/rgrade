@@ -4,12 +4,8 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-interface Post {
-    _id: string;
-    title: string;
-    content: string;
-    author: string;
-}
+import { searchPosts } from "@/lib/api";
+import { Post } from "@/lib/types";
 
 export default function SearchComponent() {
     const searchParams = useSearchParams();
@@ -27,10 +23,7 @@ export default function SearchComponent() {
             setError("");
 
             try {
-                const response = await fetch(`/api/post?s=${encodeURIComponent(query)}`);
-                if (!response.ok) throw new Error("Failed to fetch posts");
-
-                const data: Post[] = await response.json();
+                const data = await searchPosts(query);
                 setPosts(data);
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Unknown error");
@@ -62,6 +55,7 @@ export default function SearchComponent() {
                         </Link>
                         <p className="text-gray-700">{post.content.slice(0, 100).replace(/<\/?[^>]+(>|$)/g, "")}...</p>
                         <p className="text-sm text-gray-500">By {post.author}</p>
+                        <p className="text-sm text-gray-500">By {post.category}</p>
                     </li>
                 ))}
             </ul>

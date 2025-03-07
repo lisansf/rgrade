@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-
 import Link from "next/link";
 
 export default function DashboardMenu() {
@@ -15,7 +14,6 @@ export default function DashboardMenu() {
           className="text-lg font-semibold hover:text-blue-500"
           onClick={(e) => {
             e.preventDefault();
-
             const postSection = document.getElementById("posts");
             if (postSection) {
               postSection.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -28,7 +26,6 @@ export default function DashboardMenu() {
           className="text-lg font-semibold hover:text-blue-500"
           onClick={(e) => {
             e.preventDefault();
-
             const postSection = document.getElementById("addpost");
             if (postSection) {
               postSection.scrollIntoView({ behavior: "smooth", block: "end" });

@@ -5,7 +5,7 @@ interface IPost extends Document {
     content: string;
     author: string;
     images: string[];
-    tags: string[];
+    category: string[];
     views: number;
     likes: number;
     comments: Types.ObjectId[];
@@ -16,8 +16,8 @@ const PostSchema = new Schema<IPost>(
         title: { type: String, required: true, unique: true },
         content: { type: String, required: true },
         author: { type: String, required: true },
-        images: { type: [String], default: [] },
-        tags: { type: [String], default: [] },
+        images: { type: [String], default: [], required: true },
+        category: { type: [String], default: [], required: true },
         views: { type: Number, default: 0 },
         likes: { type: Number, default: 0 },
         comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],

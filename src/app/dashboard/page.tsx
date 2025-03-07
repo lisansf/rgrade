@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import CDashboard from './CDashboard';
+import CDashboard from './Components/CDashboard';
 
 export const metadata: Metadata = {
     title: "Dashboard | Retro Grade"
