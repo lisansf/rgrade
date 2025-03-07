@@ -1,7 +1,10 @@
 import { fetchPostsByCategory } from "@/lib/api";
 import { Post } from "@/lib/types";
+interface CategoryPageProps {
+    params: { slug: string };
+}
 
-export default async function CategoryPage({ params }: { params: { slug: string } }) {
+export default async function CategoryPage({ params }: CategoryPageProps) {
     const category = params.slug;
     const posts: Post[] = await fetchPostsByCategory(category);
 
