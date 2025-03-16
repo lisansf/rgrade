@@ -48,7 +48,7 @@ export async function RegisterUser(credentials: RegisterRequest): Promise<Regist
 // * ✅ Ambil post berdasarkan kategori
 export async function fetchPostsByCategory(category?: string): Promise<Post[]> {
     try {
-        const res = await fetch(`/api/post/${category}`, { cache: "no-store" });
+        const res = await fetch(`/api/${category}`, { cache: "no-store" });
 
         if (!res.ok) throw new Error(`Gagal mengambil data kategori ${category}`);
 
@@ -75,7 +75,7 @@ export async function addPost(images: string[], title: string, content: string, 
 }
 
 // * ✅ Fetch semua posts
-export async function fetchPosts(): Promise<Post[]> {
+export async function getPosts(): Promise<Post[]> {
     try {
         const res = await fetch(`/api/post`, { cache: "no-store" });
 

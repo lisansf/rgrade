@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Profile() {
     const [dropDown, setDropDown] = useState(false);
@@ -60,7 +61,7 @@ export default function Profile() {
         if (typeof window !== "undefined") {
             const username = sessionStorage.getItem("username") || "";
             const name = sessionStorage.getItem("name") || "";
-            const img = sessionStorage.getItem("img") || "/person.png";
+            const img = sessionStorage.getItem("img") || "/img/person.png";
             const role = sessionStorage.getItem("role") || "";
 
             setIsLoggedIn(!!username);
@@ -75,7 +76,7 @@ export default function Profile() {
                 className="flex items-center"
             >
                 <img
-                    src={userData.img || "/person.png"}
+                    src={userData.img || "/img/person.png"}
                     alt={`Pic of ${userData.username}`}
                     className="w-[50px] h-[50px] rounded-full "
                 />
@@ -103,7 +104,7 @@ export default function Profile() {
                     <>
                         <div className="flex items-center gap-2 p-3 border-b border-gray-300">
                             <img
-                                src={userData.img || "https://placehold.co/60x60"}
+                                src={userData.img || "/img/person.png"}
                                 alt={`Pic of ${userData.username}`}
                                 className="w-[50px] h-[50px] rounded-full"
                             />
@@ -114,13 +115,13 @@ export default function Profile() {
                             </div>
                         </div>
                         <div className="flex flex-col gap-2 p-3">
-                            <a href="/profile" className="text-gray-700 hover:text-blue-500">
+                            <Link href="/profile" className="text-gray-700 hover:text-blue-500">
                                 Profile
-                            </a>
+                            </Link>
                             {userData.role === "admin" && (
-                                <a href="/dashboard" className="text-gray-700 hover:text-blue-500">
+                                <Link href="/dashboard" className="text-gray-700 hover:text-blue-500">
                                     Dashboard
-                                </a>
+                                </Link>
                             )}
                             <button
                                 onClick={() => {

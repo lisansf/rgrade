@@ -50,7 +50,7 @@ export default function SearchComponent() {
             <ul className="space-y-4">
                 {posts.map((post) => (
                     <li key={post._id} className="border p-4 rounded-lg shadow-md">
-                        <Link href={`/post/${post.title.replace(/\s+/g, '-')}`}>
+                        <Link href={`/${post.title.replace(/\s+/g, '-')}`}>
                             <h2 className="text-xl font-bold text-blue-600 hover:underline">{post.title}</h2>
                         </Link>
                         <p className="text-gray-700">{post.content.slice(0, 100).replace(/<\/?[^>]+(>|$)/g, "")}...</p>

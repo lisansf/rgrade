@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /login/
+Disallow: /register/
+Disallow: /admin/
+Allow: /
+
+User-agent: Mediapartners-Google
+Allow: /
+
+Sitemap: https://rgwfebe.vercel.app/sitemap

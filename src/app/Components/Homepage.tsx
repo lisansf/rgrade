@@ -1,15 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { LoadingComponent, ErrorComponent } from '@/app/Components/Status';
-import { fetchPosts } from '@/lib/api';
-
-interface Post {
-    _id: string;
-    title: string;
-    content: string;
-    author: string;
-    images: string[];
-}
+import { getPosts } from '@/lib/api';
+import { Post } from '@/lib/types';
 
 export default function Landingpage() {
     const [posts, setPosts] = useState<Post[]>([]); // Tambahkan tipe array Post
@@ -17,9 +10,9 @@ export default function Landingpage() {
     const [isError, setIsError] = useState('');
 
     useEffect(() => {
-        const getPosts = async () => {
+        const fetchPosts = async () => {
             try {
-                const data: Post[] = await fetchPosts(); // Berikan tipe untuk respons data
+                const data: Post[] = await getPosts(); // Berikan tipe untuk respons data
                 console.log(data)
                 setPosts(data);
             } catch (err: unknown) {
@@ -33,7 +26,7 @@ export default function Landingpage() {
             }
         };
 
-        getPosts();
+        fetchPosts();
     }, []);
 
     if (isLoading) {
@@ -60,7 +53,7 @@ export default function Landingpage() {
                                 />
                                 <div className="absolute bottom-0 left-0 right-0 p-4">
                                     <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                        {posts[0].title}
+                                        <a href={`${posts[0].title.replace(/\s+/g, '-')}`}>{posts[0].title}</a>
                                     </h3>
                                 </div>
                             </div>
@@ -75,7 +68,7 @@ export default function Landingpage() {
                                 />
                                 <div className="w-[337px] h-[90px]">
                                     <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                        {posts[1].title}
+                                        <a href={`${posts[1].title.replace(/\s+/g, '-')}`}>{posts[1].title}</a>
                                     </h3>
                                 </div>
                             </div>
@@ -92,7 +85,7 @@ export default function Landingpage() {
                                 />
                                 <div className="absolute bottom-0 left-0 right-0 p-4">
                                     <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                        {posts[2].title}
+                                        <a href={`${posts[2].title.replace(/\s+/g, '-')}`}>{posts[2].title}</a>
                                     </h3>
                                 </div>
                             </div>
@@ -107,7 +100,7 @@ export default function Landingpage() {
                                 />
                                 <div className="w-[337px] h-[90px]">
                                     <h3 className="text-lg font-semibold text-black line-clamp-3 overflow-hidden">
-                                        {posts[3].title}
+                                        <a href={`${posts[3].title.replace(/\s+/g, '-')}`}>{posts[3].title}</a>
                                     </h3>
                                 </div>
                             </div>
@@ -126,7 +119,7 @@ export default function Landingpage() {
                     <div className="flex flex-col gap-2 pt-4">
 
                         {/* Guide 1 */}
-                        {posts.slice(0, 5).map((post, index) => (
+                        {posts.map((post, index) => (
                             <div key={index} className="flex flex-row items-start gap-4">
                                 <img
                                     src={post.images[0] || "https://placehold.co/173x97"}
@@ -135,7 +128,7 @@ export default function Landingpage() {
                                 />
                                 <div className="flex-grow h-[97px]">
                                     <h3 className="text-lg font-semibold text-black line-clamp-2 overflow-hidden w-[500px]">
-                                        {post.title}
+                                        <a href={`${post.title.replace(/\s+/g, '-')}`}>{post.title}</a>
                                     </h3>
                                 </div>
                             </div>
@@ -179,7 +172,7 @@ export default function Landingpage() {
                                     />
                                     <div className="flex-grow h-[97px]">
                                         <h3 className="text-lg font-semibold text-black line-clamp-2 overflow-hidden w-[500px]">
-                                            {post.title}
+                                            <a href={`${post.title.replace(/\s+/g, '-')}`}>{post.title}</a>
                                         </h3>
                                     </div>
                                 </div>

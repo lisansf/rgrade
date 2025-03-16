@@ -15,10 +15,10 @@ export default function Footer() {
       {/* Logo, Garis, dan Lorem Ipsum */}
       <div className="flex flex-row gap-6 items-center pt-6 mt-4">
         {/* Logo */}
-        <img src="/Logo_White.png" className="w-[8rem] h-[7rem]" alt="Logo" />
+        <img src="/img/Logo_White.png" className="w-[8rem] h-[7rem]" alt="Logo" />
 
         {/* Garis */}
-        <img src="/Garis.png" className="w-[0.4rem] h-[7rem]" alt="Separator" />
+        <img src="/img/Garis.png" className="w-[0.4rem] h-[7rem]" alt="Separator" />
 
         {/* Text */}
         <div className="w-[472px]">
@@ -36,17 +36,17 @@ export default function Footer() {
         <div className="flex gap-6 mt-4">
           {/* Gmail */}
           <Link href="mailto:example@gmail.com">
-            <img src="/gmail-icon.png" alt="Gmail" className="w-10 h-10" />
+            <img src="/img/gmail-icon.png" alt="Gmail" className="w-10 h-10" />
           </Link>
 
           {/* Instagram */}
-          <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-            <img src="/instagram-icon2.png" alt="Instagram" className="w-10 h-10" />
+          <Link href="https://www.instagram.com/retrogrademedia24/" target="_blank" rel="noopener noreferrer">
+            <img src="/img/instagram-icon2.png" alt="Instagram" className="w-10 h-10" />
           </Link>
 
           {/* Teflon */}
-          <Link href="https://example.com" target="_blank" rel="noopener noreferrer">
-            <img src="/call-icon.png" alt="Teflon" className="w-10 h-10" />
+          <Link href="https://wa.me/6282217193687" target="_blank" rel="noopener noreferrer">
+            <img src="/img/call-icon.png" alt="Teflon" className="w-10 h-10" />
           </Link>
         </div>
       </div>

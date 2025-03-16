@@ -71,7 +71,7 @@ export default function RegisterModal({
         <div className="bg-white rounded-[20px] shadow-lg w-[777px] h-[580px] flex relative">
           <div>
             <img
-              src="/backgroun-login-page.png"
+              src="/img/backgroun-login-page.png"
               alt="Background"
               className="w-[245px] h-[580px] rounded-l-lg"
             />
@@ -137,8 +137,8 @@ export default function RegisterModal({
                 </button>
                 <p className="text-center text-gray-400">Or Register Using</p>
                 <div className="flex gap-4">
-                  <img src="/facebook-icon.png" alt="Facebook" className="w-[35px]" />
-                  <img src="/google-icon.png" alt="Google" className="w-[35px]" />
+                  <img src="/img/facebook-icon.png" alt="Facebook" className="w-[35px]" />
+                  <img src="/img/google-icon.png" alt="Google" className="w-[35px]" />
                 </div>
               </form>
             </div>

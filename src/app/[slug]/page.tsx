@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { LoadingComponent } from "@/app/Components/Status";
-import { fetchPosts } from "@/lib/api";
+import { getPosts } from "@/lib/api";
 import { Post } from "@/lib/types";
 
 export default function PostSlug() {
@@ -17,9 +17,9 @@ export default function PostSlug() {
     useEffect(() => {
         if (!slug) return; // Jangan fetch jika slug tidak ada
 
-        const getPost = async () => {
+        const fetchPost = async () => {
             try {
-                const data: Post[] = await fetchPosts();
+                const data: Post[] = await getPosts();
 
                 // Ubah slug menjadi format yang sama seperti judul (contoh: "ini-contoh" => "Ini Contoh")
                 const formattedTitle = slug.replace(/-/g, " ");
@@ -43,7 +43,7 @@ export default function PostSlug() {
             }
         };
 
-        getPost();
+        fetchPost();
     }, [slug]);
 
     // **Jika terjadi error**

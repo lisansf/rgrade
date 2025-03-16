@@ -19,7 +19,7 @@ export default function Home() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim() === "") return; // Jangan submit kalau input kosong
-    router.push(`/post/search?q=${encodeURIComponent(query)}`);
+    router.push(`/search?q=${encodeURIComponent(query)}`);
   };
 
   const toggleModal = () => {
@@ -53,15 +53,15 @@ export default function Home() {
         <nav className="bg-customDarkBlue text-white p-4 flex justify-between px-5 text-1xl font-bold py-8">
           <div className="max-w-[1365px] mx-auto w-full flex justify-between items-center">
             <div className="flex items-center gap-8">
-              <img src="/Logo_White.png" className="w-[4rem]" alt="Logo" />
-              <img src="/Garis.png" className="w-[0.5rem] h-10" alt="separator" />
+              <img src="/img/Logo_White.png" className="w-[4rem]" alt="Logo" />
+              <img src="/img/Garis.png" className="w-[0.5rem] h-10" alt="separator" />
             </div>
 
             <div className="flex gap-10">
               <Link href="/" className="hover:text-[#ECB365]">Home</Link>
-              <Link href="/post/latest" className="hover:text-[#ECB365]">Latest</Link>
-              <Link href="/post/guide" className="hover:text-[#ECB365]">Guide</Link>
-              <Link href="/post/category" className="hover:text-[#ECB365]">Category</Link>
+              <Link href="/latest" className="hover:text-[#ECB365]">Latest</Link>
+              <Link href="/guide" className="hover:text-[#ECB365]">Guide</Link>
+              <Link href="/category" className="hover:text-[#ECB365]">Category</Link>
             </div>
 
             {/* Search Bar dan Profile */}
@@ -110,27 +110,27 @@ export default function Home() {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-3xl text-[#ECB365] font-bold mb-5">Discover</h2>
-        <img src="/PemisahOrange.png" alt="Separator" />
+        <img src="/img/PemisahOrange.png" alt="Separator" />
         <Link
           href="/"
           className="block py-2 pt-8 text-2xl font-bold hover:text-[#ECB365]">
           Home
         </Link>
-        <img src="PemisahPutih.png" alt="Separator" />
+        <img src="/img/PemisahPutih.png" alt="Separator" />
         <Link
-          href="/post/latest"
+          href="/latest"
           className="block py-2 text-2xl font-bold hover:text-[#ECB365]">
           Latest
         </Link>
-        <img src="PemisahPutih.png" alt="Separator" />
+        <img src="/img/PemisahPutih.png" alt="Separator" />
         <Link
-          href="/post/guide"
+          href="/guide"
           className="block py-2 text-2xl font-bold hover:text-[#ECB365]">
           Guide
         </Link>
-        <img src="PemisahPutih.png" alt="Separator" />
+        <img src="/img/PemisahPutih.png" alt="Separator" />
         <Link
-          href="/post/category"
+          href="/category"
           className="block py-2 text-2xl font-bold hover:text-[#ECB365]">
           Category
         </Link>

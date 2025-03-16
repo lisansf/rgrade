@@ -27,7 +27,7 @@ export default function CategoryPage() {
                 {posts.map((post) => (
                     <div key={post._id} className="p-4 border rounded-lg shadow">
                         <h2 className="text-xl font-semibold">{post.title}</h2>
-                        <a href={`/post/${post.title.replace(/\s+/g, '-')}`} className="text-blue-500 hover:underline">
+                        <a href={`/${post.title.replace(/\s+/g, '-')}`} className="text-blue-500 hover:underline">
                             Baca Selengkapnya
                         </a>
                     </div>

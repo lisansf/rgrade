@@ -50,7 +50,7 @@ export default function LoginModal({
       <div className="bg-white rounded-[20px] shadow-lg w-[777px] h-[580px] flex relative">
         <div>
           <img
-            src="/backgroun-login-page.png"
+            src="/img/backgroun-login-page.png"
             alt="Background"
             className="w-[245px] h-[580px] rounded-l-lg"
           />
@@ -103,8 +103,8 @@ export default function LoginModal({
               <p className="text-center text-gray-400">Or Login Using</p>
               <div className="flex flex-col items-center gap-2">
                 <div className="flex flex-row gap-4">
-                  <img src="/facebook-icon.png" className="w-[35px]" alt="Facebook" />
-                  <img src="/google-icon.png" className="w-[35px]" alt="Google" />
+                  <img src="/img/facebook-icon.png" className="w-[35px]" alt="Facebook" />
+                  <img src="/img/google-icon.png" className="w-[35px]" alt="Google" />
                 </div>
                 <button
                   className="text-blue-500 hover:underline"
