@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 
 // * Library
 import { Post } from "@/lib/types";
-import { fetchPosts, deletePost } from "@/lib/api";
+import { deletePost, getPosts } from "@/lib/api";
 
 // * Components
 import { ErrorComponent, LoadingComponent } from "@/app/Components/Status";
@@ -18,9 +18,9 @@ export default function MyPosts() {
     const router = useRouter(); // * Router
 
     useEffect(() => {
-        const getPost = async () => { // * Mengambil semua Post
+        const fetchPosts = async () => { // * Mengambil semua Post
             try {
-                const data: Post[] = await fetchPosts(); // * Fetching Posts
+                const data: Post[] = await getPosts(); // * Fetching Posts
                 const currentUser = sessionStorage.getItem("username"); // * Get the username from session storage
                 if (!currentUser) throw new Error("User not found in session"); // * When username aren't in session storage
 
@@ -36,7 +36,7 @@ export default function MyPosts() {
             }
         };
 
-        getPost();
+        fetchPosts();
     }, []);
 
     // * 🗑️ Fungsi untuk menghapus post
