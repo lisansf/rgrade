@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/Logo_White.png" />
+        <link rel="icon" href="/img/Logo_White.png" />
       </head>
       <body>
         {/* Navbar */}

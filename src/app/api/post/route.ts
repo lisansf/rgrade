@@ -17,7 +17,7 @@ export async function GET(request: Request) {
         }
 
         if (category) {
-            query.category = category; // 🏷️ Filter berdasarkan kategori
+            query.category = { $in: [category] }; // 🏷️ Filter berdasarkan kategori
         }
 
         const posts = await Post.find(query)
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
             title,
             content,
             category: category || [],
-            author, // Pastikan authorId tersimpan
+            author, // Pastikan username tersimpan
         });
 
         await newPost.save();

@@ -2,14 +2,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { LoadingComponent } from '@/app/Components/Status';
-
-interface Post {
-  _id: string;
-  title: string;
-  content: string;
-  author: string;
-  images: string;
-}
+import { Post } from '@/lib/types';
 
 export default function Latest() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -18,7 +11,7 @@ export default function Latest() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("/api/archive", {
+        const response = await fetch("/api/post", {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -60,12 +53,12 @@ export default function Latest() {
                 >
                   {/* Artikel Box */}
                   <div className="h-[478px] w-full bg-gray-300 flex items-start justify-start p-4 rounded-t-lg">
-                    <p><img src={post.images || "https://placehold.co/857x400"} /></p>
+                    <p><img src={post.images[0] || "https://placehold.co/857x400"} /></p>
                   </div>
                   {/* Judul Artikel */}
                   <div className="p-4 w-full bg-white rounded-b-lg">
                     <h2 className="text-lg font-medium text-gray-800">
-                      {post.title}
+                      <a href={`${post.title.replace(/\s+/g, '-')}`}>{post.title}</a>
                     </h2>
                   </div>
                 </div>

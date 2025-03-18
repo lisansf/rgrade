@@ -38,7 +38,7 @@ export async function RegisterUser(credentials: RegisterRequest): Promise<Regist
             throw new Error(errorData.message || "Gagal melakukan registrasi");
         }
 
-        return await res.json();
+        return await errorData;
     } catch (err) {
         console.error("Register error:", err);
         return { message: err instanceof Error ? err.message : "Unknown error" } as RegisterResponse;
@@ -46,15 +46,19 @@ export async function RegisterUser(credentials: RegisterRequest): Promise<Regist
 }
 
 // * ✅ Ambil post berdasarkan kategori
-export async function fetchPostsByCategory(category?: string): Promise<Post[]> {
+export async function fetchPostsByCategory(category: string): Promise<Post[]> {
     try {
-        const res = await fetch(`/api/${category}`, { cache: "no-store" });
+        const res = await fetch(`/api/post?category=${encodeURIComponent(category)}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            cache: "no-store", // ✅ Hindari cache
+        });
 
-        if (!res.ok) throw new Error(`Gagal mengambil data kategori ${category}`);
+        if (!res.ok) throw new Error("Failed to fetch posts");
 
         return await res.json();
     } catch (err) {
-        if (err instanceof Error) console.error("Error fetching posts by category: ", err.message)
+        console.error("Error fetching posts:", err instanceof Error ? err.message : err);
         return [];
     }
 }
