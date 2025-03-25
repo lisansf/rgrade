@@ -67,6 +67,7 @@ export default function PostSlug() {
             <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
             <p className="text-gray-500 mb-2">By {post.author}</p>
             <p className="text-gray-500 mb-2">Category: {post.category.join(", ")}</p>
+            <p className="text-gray-500 mb-2">Tags: {post.tags.join(", ")}</p>
             <div className="text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: post.content }}></div>
         </div>
     );

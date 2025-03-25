@@ -10,6 +10,8 @@ export default function AddPost() {
     const [content, setContent] = useState('');
     const [category, setCategory] = useState<string[]>([]);
     const [images, setImageUrl] = useState<string[]>([]);
+    const [tags, setTags] = useState<string[]>([]);
+    const [tagInput, setTagInput] = useState("");
 
     // * Router
     const router = useRouter();
@@ -25,13 +27,14 @@ export default function AddPost() {
         if (category.length === 0) return alert('At least one category is required!');
         if (!author) return alert('Author is required!');
         try {
-            const data = await addPost(images, title, content, category, author);
+            const data = await addPost(images, title, content, category, author, tags);
             if (data) {
                 alert('Post submitted successfully!');
                 setTitle('');
                 setContent('');
                 setCategory([]);
                 setImageUrl([]);
+                setTags([]);
                 router.refresh()
             } else {
                 alert(data.message || 'Failed to submit post');
@@ -57,6 +60,17 @@ export default function AddPost() {
                 ? prev.filter((cat) => cat !== value) // ✅ Hapus jika sudah ada
                 : [...prev, value] // ✅ Tambahkan jika belum ada
         );
+    };
+
+    const addTag = () => {
+        if (tagInput.trim() !== "" && !tags.includes(tagInput)) {
+            setTags([...tags, tagInput.trim()]);
+            setTagInput(""); // Reset input
+        }
+    };
+
+    const removeTag = (index: number) => {
+        setTags(tags.filter((_, i) => i !== index));
     };
 
     return (
@@ -147,6 +161,41 @@ export default function AddPost() {
                         <input type="checkbox" value="photography" onChange={handleCategoryChange} checked={category.includes("photography")} />
                         &nbsp;Photography
                     </label>
+                </div>
+                {/* //* Tags Section */}
+                <div className="mt-4">
+                    <span className="block font-semibold">Add Tags:</span>
+                    <div className="flex items-center gap-2 mt-2">
+                        <input
+                            type="text"
+                            placeholder="Enter tag..."
+                            value={tagInput}
+                            onChange={(e) => setTagInput(e.target.value)}
+                            className="p-2 border rounded-md w-[200px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <button
+                            onClick={addTag}
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                            type="button"
+                        >
+                            Add
+                        </button>
+                    </div>
+
+                    {/* //* Display Added Tags */}
+                    <div className="flex flex-wrap gap-2 mt-3">
+                        {tags.map((tag, index) => (
+                            <div
+                                key={index}
+                                className="flex items-center bg-gray-200 px-3 py-1 rounded-full text-sm font-medium"
+                            >
+                                <span className="mr-2">#{tag}</span>
+                                <button onClick={() => removeTag(index)} className="text-red-500 hover:text-red-700">
+                                    ✕
+                                </button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <Tiptap
                     onChange={setContent} />

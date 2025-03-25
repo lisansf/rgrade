@@ -35,12 +35,12 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
     try {
-        const { title, content, images, category, author } = await request.json();
+        const { title, content, images, category, author, tags } = await request.json();
 
         // Validasi input
-        if (!title || !content || !author || !category || !images) {
+        if (!title || !content || !author || !category || !images || !tags) {
             return NextResponse.json(
-                { message: "Title, Content, and Author ID are required" },
+                { message: "All Fields are required" },
                 { status: 400 }
             );
         }
@@ -53,6 +53,7 @@ export async function POST(request: Request) {
             title,
             content,
             category: category || [],
+            tags: tags || [],
             author, // Pastikan username tersimpan
         });
 

@@ -18,7 +18,7 @@ export async function POST(request: Request) {
         // Cari user berdasarkan username
         const user = await User.findOne({ email });
         if (user) {
-            return NextResponse.json({ message: "Login successful!", _id: user._id, email: user.email, username: user.username, role: user.role }, { status: 200 });
+            return NextResponse.json({ message: "Login successful!", _id: user._id, email: user.email, username: user.username, role: user.role, profilePict: user.profilePict }, { status: 200 });
         }
 
         // User tidak ditemukan, buat user baru

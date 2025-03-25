@@ -16,7 +16,7 @@ export default function Profile() {
     const [userData, setUserData] = useState({
         username: "",
         name: "",
-        img: "",
+        profilePict: "",
         role: "",
     });
 
@@ -61,11 +61,11 @@ export default function Profile() {
         if (typeof window !== "undefined") {
             const username = sessionStorage.getItem("username") || "";
             const name = sessionStorage.getItem("name") || "";
-            const img = sessionStorage.getItem("img") || "/img/person.png";
+            const profilePict = sessionStorage.getItem("profilePict") || "/img/person.png";
             const role = sessionStorage.getItem("role") || "";
 
             setIsLoggedIn(!!username);
-            setUserData({ username, name, img, role });
+            setUserData({ username, name, profilePict, role });
         }
     }, [router]);
 
@@ -76,7 +76,7 @@ export default function Profile() {
                 className="flex items-center"
             >
                 <img
-                    src={userData.img || "/img/person.png"}
+                    src={userData.profilePict || "/img/person.png"}
                     alt={`Pic of ${userData.username}`}
                     className="w-[50px] h-[50px] rounded-full "
                 />
@@ -104,7 +104,7 @@ export default function Profile() {
                     <>
                         <div className="flex items-center gap-2 p-3 border-b border-gray-300">
                             <img
-                                src={userData.img || "/img/person.png"}
+                                src={userData.profilePict || "/img/person.png"}
                                 alt={`Pic of ${userData.username}`}
                                 className="w-[50px] h-[50px] rounded-full"
                             />
@@ -126,7 +126,7 @@ export default function Profile() {
                             <button
                                 onClick={() => {
                                     sessionStorage.clear();
-                                    setUserData({ username: "", name: "", img: "", role: "" });
+                                    setUserData({ username: "", name: "", profilePict: "", role: "" });
                                     setIsLoggedIn(false);
                                     router.refresh();
                                 }}

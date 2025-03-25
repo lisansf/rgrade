@@ -6,6 +6,7 @@ interface IPost extends Document {
     author: string;
     images: string[];
     category: string[];
+    tags: string[];
     views: number;
     likes: number;
     comments: Types.ObjectId[];
@@ -18,6 +19,7 @@ const PostSchema = new Schema<IPost>(
         author: { type: String, required: true },
         images: { type: [String], default: [], required: true },
         category: { type: [String], default: [], required: true },
+        tags: { type: [String], default: [] },
         views: { type: Number, default: 0 },
         likes: { type: Number, default: 0 },
         comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],

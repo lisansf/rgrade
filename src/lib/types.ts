@@ -7,6 +7,7 @@ export interface LoginResponse {
     username: string;
     role: string;
     message: string;
+    profilePict: string;
 }
 
 export interface RegisterRequest {
@@ -26,8 +27,17 @@ export interface Post {
     content: string;
     author: string;
     category: string[];
+    tags: string[];
     views: string;
     likes: string;
     comments: string;
     createdAt: Date;
+}
+
+export interface User {
+    email: string;
+    username: string;
+    password: string;
+    role: 'admin' | 'user';
+    profilePict: string;
 }

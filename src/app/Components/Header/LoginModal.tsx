@@ -26,10 +26,11 @@ export default function LoginModal({
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const credentials = { email, password };
+    const credentials = { email, password, };
     const data = await loginUser(credentials);
     if (data) {
       sessionStorage.setItem('username', data.username);
+      sessionStorage.setItem('profilePict', data.profilePict);
       sessionStorage.setItem('role', data.role);
       alert(data.message);
       setEmail('');

@@ -1,4 +1,50 @@
-import { RegisterRequest, RegisterResponse, LoginRequest, LoginResponse, Post } from "@/lib/types";
+import { RegisterRequest, RegisterResponse, LoginRequest, LoginResponse, Post, User } from "@/lib/types";
+
+// * Ambil data pengguna berdasarkan username
+export async function getUserProfile(username: string): Promise<User | null> {
+    try {
+        const res = await fetch(`/api/user?username=${username}`);
+        if (!res.ok) return null;
+        return await res.json();
+    } catch (err) {
+        console.error("Error fetching user profile:", err);
+        return null;
+    }
+}
+
+// * Update profil pengguna
+export async function updateProfile(email: string, updatedData: Partial<User>): Promise<User | null> {
+    try {
+        const res = await fetch("/api/user", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, ...updatedData }),
+        });
+
+        if (!res.ok) return null;
+        return await res.json();
+    } catch (err) {
+        console.error("Error updating profile:", err);
+        return null;
+    }
+}
+
+// * Hapus akun pengguna
+export async function deleteUser(email: string): Promise<{ message: string } | null> {
+    try {
+        const res = await fetch("/api/user", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+        });
+
+        if (!res.ok) return null;
+        return await res.json();
+    } catch (err) {
+        console.error("Error deleting user:", err);
+        return null;
+    }
+}
 
 // * Fungsi untuk Login ke API
 export async function loginUser(credentials: LoginRequest): Promise<LoginResponse | null> {
@@ -64,12 +110,12 @@ export async function fetchPostsByCategory(category: string): Promise<Post[]> {
 }
 
 // * ✅ Add posts
-export async function addPost(images: string[], title: string, content: string, category: string[], author: string) {
+export async function addPost(images: string[], title: string, content: string, category: string[], author: string, tags: string[]) {
     try {
         const res = await fetch('/api/post', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ images, title, content, category, author }),
+            body: JSON.stringify({ images, title, content, category, author, tags }),
         });
 
         return res.json();
