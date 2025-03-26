@@ -124,6 +124,18 @@ export async function addPost(images: string[], title: string, content: string, 
     }
 }
 
+// ✅ Ambil post berdasarkan ID
+export async function getPostById(id: string) {
+    try {
+        const res = await fetch(`/api/post/${id}`, { method: "GET" });
+        if (!res.ok) throw new Error("Failed to fetch post");
+        return await res.json();
+    } catch (err) {
+        console.error("Error fetching post by ID:", err);
+        return null;
+    }
+}
+
 // * ✅ Fetch semua posts
 export async function getPosts(): Promise<Post[]> {
     try {
@@ -152,6 +164,23 @@ export async function deletePost(postId: string): Promise<boolean> {
     } catch (err) {
         console.error("Error deleting post:", err);
         return false; // ❌ Jika gagal
+    }
+}
+
+// ✅ Update post berdasarkan ID
+export async function updatePost(id: string, updatedPost: Partial<Post>) {
+    try {
+        const res = await fetch(`/api/post/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedPost),
+        });
+
+        if (!res.ok) throw new Error("Failed to update post");
+        return await res.json();
+    } catch (err) {
+        console.error("Error updating post:", err);
+        return null;
     }
 }
 

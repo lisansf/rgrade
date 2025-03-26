@@ -13,7 +13,7 @@ export default function Landingpage() {
         const fetchPosts = async () => {
             try {
                 const data: Post[] = await getPosts(); // Berikan tipe untuk respons data
-                console.log(data)
+                // console.log(data) // Debugging
                 setPosts(data);
             } catch (err: unknown) {
                 if (err instanceof Error) {

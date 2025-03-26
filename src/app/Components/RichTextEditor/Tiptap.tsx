@@ -1,5 +1,5 @@
 'use client';
-import Toolbar from './Toolbar'
+import { useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
@@ -10,7 +10,14 @@ import BulletList from '@tiptap/extension-bullet-list';
 import OrderedList from '@tiptap/extension-ordered-list';
 import ImageResize from 'tiptap-extension-resize-image';
 
-export default function Tiptap({ onChange }: { onChange: (html: string) => void }) {
+import Toolbar from './Toolbar';
+
+interface TiptapProps {
+    value?: string; // ✅ Tambahkan `value` untuk menampilkan data lama
+    onChange: (html: string) => void;
+}
+
+export default function Tiptap({ value = "<p>Start typing...</p>", onChange }: TiptapProps) {
     const editor = useEditor({
         extensions: [
             StarterKit.configure(),
@@ -34,12 +41,19 @@ export default function Tiptap({ onChange }: { onChange: (html: string) => void 
             Image,
             ImageResize
         ],
-        content: "<p>Content Here</p>",
+        content: value,
         onUpdate: ({ editor }) => {
             const htmlContent = editor.getHTML();
             onChange(htmlContent);
         },
     });
+
+    // ✅ Perbarui konten jika `value` berubah
+    useEffect(() => {
+        if (editor && value) {
+            editor.commands.setContent(value);
+        }
+    }, [value, editor]);
 
     if (!editor) return null;
 

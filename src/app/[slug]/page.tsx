@@ -3,63 +3,52 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { LoadingComponent } from "@/app/Components/Status";
+import { LoadingComponent, ErrorComponent, PostNotFound } from "@/app/Components/Status";
 import { getPosts } from "@/lib/api";
 import { Post } from "@/lib/types";
 
 export default function PostSlug() {
     const [post, setPost] = useState<Post | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     const params = useParams();
     const slug = params?.slug ? String(params.slug) : ""; // Pastikan `slug` adalah string
 
     useEffect(() => {
-        if (!slug) return; // Jangan fetch jika slug tidak ada
+        if (!slug) return;
 
         const fetchPost = async () => {
             try {
                 const data: Post[] = await getPosts();
+                const formattedTitle = slug.replace(/-/g, " "); // Format slug ke judul
 
-                // Ubah slug menjadi format yang sama seperti judul (contoh: "ini-contoh" => "Ini Contoh")
-                const formattedTitle = slug.replace(/-/g, " ");
-
-                // Cari post yang judulnya cocok dengan slug dari URL
+                // Cari postingan berdasarkan title
                 const matchedPost = data.find(
                     (post) => post.title.toLowerCase() === formattedTitle.toLowerCase()
                 );
 
                 if (matchedPost) {
                     setPost(matchedPost);
-                } else {
-                    setError("Postingan tidak ditemukan.");
                 }
             } catch (err: unknown) {
-                if (err instanceof Error) {
-                    setError(err.message || "Terjadi kesalahan");
-                } else {
-                    setError("Unknown error occurred");
-                }
+                setError(err instanceof Error ? err.message : "Terjadi kesalahan saat memuat data.");
+            } finally {
+                setIsLoading(false);
             }
         };
 
         fetchPost();
     }, [slug]);
 
-    // **Jika terjadi error**
-    if (error) {
-        return (
-            <div className="w-full p-6 bg-red-100 text-red-600">
-                <h1 className="text-xl font-bold">Error</h1>
-                <p>{error}</p>
-            </div>
-        );
-    }
+    // **Tampilkan Loading**
+    if (isLoading) return <LoadingComponent />;
 
-    // **Jika postingan belum dimuat**
-    if (!post) {
-        return <LoadingComponent />;
-    }
+    // **Tampilkan Error**
+    if (error) return <ErrorComponent msg={error} />;
+
+    // **Tampilkan Not Found jika tidak ada postingan**
+    if (!post) return <PostNotFound />;
 
     // **Render detail postingan jika ditemukan**
     return (
