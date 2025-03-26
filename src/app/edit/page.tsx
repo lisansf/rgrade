@@ -1,5 +1,3 @@
-"use client"; // ✅ Pastikan ini hanya dirender di client-side
-
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getPostById, updatePost } from "@/lib/api";
