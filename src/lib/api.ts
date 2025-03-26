@@ -124,10 +124,10 @@ export async function addPost(images: string[], title: string, content: string, 
     }
 }
 
-// ✅ Ambil post berdasarkan ID
+// ✅ Ambil post berdasarkan ID (pakai query parameter ?id=)
 export async function getPostById(id: string) {
     try {
-        const res = await fetch(`/api/post/${id}`, { method: "GET" });
+        const res = await fetch(`/api/post?id=${id}`, { method: "GET" }); // ✅ Pakai ?id=
         if (!res.ok) throw new Error("Failed to fetch post");
         return await res.json();
     } catch (err) {
@@ -167,10 +167,10 @@ export async function deletePost(postId: string): Promise<boolean> {
     }
 }
 
-// ✅ Update post berdasarkan ID
+// ✅ Update post berdasarkan ID (pakai query parameter ?id=)
 export async function updatePost(id: string, updatedPost: Partial<Post>) {
     try {
-        const res = await fetch(`/api/post/${id}`, {
+        const res = await fetch(`/api/post?id=${id}`, { // ✅ Pakai ?id=
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedPost),

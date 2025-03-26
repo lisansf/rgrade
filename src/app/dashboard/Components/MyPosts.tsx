@@ -96,7 +96,7 @@ export default function MyPosts() {
                                     </td>
                                     <td className="text-center p-2">
                                         <button
-                                            onClick={() => router.push(`/edit/${post._id}`)}
+                                            onClick={() => router.push(`/edit?id=${post._id}`)} // ✅ Gunakan query parameter
                                             className="bg-yellow-500 text-white px-3 py-1 rounded mr-2 hover:bg-yellow-600"
                                         >
                                             ✏️ Edit
