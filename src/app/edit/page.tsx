@@ -1,4 +1,4 @@
-"use client";
+"use client"; // ✅ Pastikan ini hanya dirender di client-side
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -9,7 +9,7 @@ import Tiptap from "@/app/Components/RichTextEditor/Tiptap";
 export default function EditPost() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const id = searchParams.get("id"); // Ambil ID dari URL
+    const id = searchParams.get("id"); // ✅ Ambil ID dari query parameter
 
     // * State
     const [title, setTitle] = useState("");
@@ -18,28 +18,33 @@ export default function EditPost() {
     const [images, setImages] = useState<string[]>([]);
     const [tags, setTags] = useState<string[]>([]);
     const [tagInput, setTagInput] = useState("");
+    const [loading, setLoading] = useState(true); // ✅ Tambahkan loading state
 
+    // ✅ Ambil data post dari API saat halaman dimuat
     useEffect(() => {
         if (!id) return;
 
         const fetchPost = async () => {
             try {
-                const data = await getPostById(id as string);
+                const data = await getPostById(id);
                 if (!data) throw new Error("Post not found");
 
-                setTitle(data.title);
-                setContent(data.content);
+                setTitle(data.title || "");
+                setContent(data.content || "");
                 setCategory(data.category || []);
                 setImages(data.images || []);
                 setTags(data.tags || []);
             } catch (err) {
                 console.error("Error fetching post:", err);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchPost();
     }, [id]);
 
+    // ✅ Handle update post
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -48,13 +53,14 @@ export default function EditPost() {
 
             if (success) {
                 alert("Post updated successfully!");
-                router.push("/dashboard"); // Kembali ke Dashboard setelah edit
+                router.push("/dashboard");
             }
         } catch (err) {
             console.error("Error updating post:", err);
         }
     };
 
+    // ✅ Handle kategori (fix onChange)
     const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setCategory((prev) =>
@@ -62,16 +68,19 @@ export default function EditPost() {
         );
     };
 
+    // ✅ Handle tambah & hapus tag
     const addTag = () => {
         if (tagInput.trim() !== "" && !tags.includes(tagInput)) {
             setTags([...tags, tagInput.trim()]);
-            setTagInput(""); // Reset input
+            setTagInput("");
         }
     };
 
     const removeTag = (index: number) => {
         setTags(tags.filter((_, i) => i !== index));
     };
+
+    if (loading) return <p className="text-center mt-6">Loading...</p>;
 
     return (
         <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-6">
@@ -130,14 +139,6 @@ export default function EditPost() {
                     <label>
                         <input type="checkbox" value="music" onChange={handleCategoryChange} checked={category.includes("music")} />
                         &nbsp;Music
-                    </label>
-                    <label>
-                        <input type="checkbox" value="art" onChange={handleCategoryChange} checked={category.includes("art")} />
-                        &nbsp;Art & Design
-                    </label>
-                    <label>
-                        <input type="checkbox" value="photography" onChange={handleCategoryChange} checked={category.includes("photography")} />
-                        &nbsp;Photography
                     </label>
                 </div>
 
