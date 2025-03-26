@@ -2,34 +2,34 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Post from "@/lib/models/Post";
 
-export async function GET(request: Request) {
+export async function GET(req: Request) {
     try {
         await connectDB();
+        const { searchParams } = new URL(req.url);
 
-        const { searchParams } = new URL(request.url);
-        const search = searchParams.get("s") || ""; // Ambil query pencarian
-        const category = searchParams.get("category") || ""; // 🏷️ Query filter kategori
+        const postId = searchParams.get("id");
+        const search = searchParams.get("s") || "";
+        const category = searchParams.get("category") || "";
 
+        if (postId) {
+            // Jika request GET memiliki ID, ambil satu post
+            const post = await Post.findById(postId).lean();
+            if (!post) return NextResponse.json({ message: "Post not found" }, { status: 404 });
+            return NextResponse.json(post, { status: 200 });
+        }
+
+        // Jika tidak ada ID, cari berdasarkan query pencarian atau kategori
         const query: Partial<Record<string, unknown>> = {};
 
-        if (search) {
-            query.title = { $regex: search, $options: "i" }; // 🔍 Case-insensitive search untuk title
-        }
+        if (search) query.title = { $regex: search, $options: "i" };
+        if (category) query.category = { $in: [category] };
 
-        if (category) {
-            query.category = { $in: [category] }; // 🏷️ Filter berdasarkan kategori
-        }
-
-        const posts = await Post.find(query)
-            .sort({ createdAt: -1 })
-            .lean();
+        const posts = await Post.find(query).sort({ createdAt: -1 }).lean();
 
         return NextResponse.json(posts, { status: 200 });
+
     } catch (error) {
-        return NextResponse.json(
-            { message: "Failed to fetch posts", error: error instanceof Error ? error.message : error },
-            { status: 500 }
-        );
+        return NextResponse.json({ message: "Failed to fetch posts", error: error instanceof Error ? error.message : error }, { status: 500 });
     }
 }
 
@@ -110,41 +110,23 @@ export async function DELETE(request: Request) {
     }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(req: Request) {
     try {
         await connectDB();
 
-        const { id, title, content, images } = await request.json(); // Ambil data dari body
+        const { searchParams } = new URL(req.url);
+        const postId = searchParams.get("id");
 
-        if (!id) {
-            return NextResponse.json(
-                { message: "Post ID is required" },
-                { status: 400 }
-            );
-        }
+        if (!postId) return NextResponse.json({ message: "Post ID is required" }, { status: 400 });
 
-        const updatedPost = await Post.findByIdAndUpdate(
-            id,
-            { title, content, images },
-            { new: true, runValidators: true } // Mengembalikan post yang sudah diperbarui
-        );
+        const updatedData = await req.json();
+        const updatedPost = await Post.findByIdAndUpdate(postId, updatedData, { new: true, runValidators: true });
 
-        if (!updatedPost) {
-            return NextResponse.json(
-                { message: "Post not found" },
-                { status: 404 }
-            );
-        }
+        if (!updatedPost) return NextResponse.json({ message: "Post not found" }, { status: 404 });
 
-        return NextResponse.json(
-            { message: "Post updated successfully", post: updatedPost },
-            { status: 200 }
-        );
+        return NextResponse.json({ message: "Post updated successfully", post: updatedPost }, { status: 200 });
+
     } catch (error) {
-        console.error("Error updating post:", error);
-        return NextResponse.json(
-            { message: "Failed to update post", error: error instanceof Error ? error.message : error },
-            { status: 500 }
-        );
+        return NextResponse.json({ message: "Failed to update post", error: error instanceof Error ? error.message : error }, { status: 500 });
     }
 }
