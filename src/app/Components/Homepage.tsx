@@ -156,7 +156,7 @@ export default function Landingpage() {
 				{/* Ad Space Left */}
 				<div className="relative flex pt-28 flex-wrap w-[279px]">
 					<div className="bg-gray-300 flex items-center justify-center text-center">
-						<div className="w-full sm:w-[100px] sm:h-[100px] bg-gray-400 md:w-[150px] md:h-[200px] lg:w-[279px] lg:h-[578px]">
+						<div className="w-full sm:w-[100px] sm:h-[100px] bg-gray-50 md:w-[150px] md:h-[200px] lg:w-[279px] lg:h-[578px]">
 							<p className="text-gray-700 text-xs lg:text-sm flex">Ad Space</p>
 						</div>
 					</div>
@@ -196,7 +196,7 @@ export default function Landingpage() {
 				{/* Ad Space Right */}
 				<div className="relative flex pt-28 flex-wrap w-[279px]">
 					<div className="bg-gray-300 flex items-center justify-center text-center">
-						<div className="w-full sm:w-[100px] sm:h-[100px] bg-gray-400 md:w-[150px] md:h-[200px] lg:w-[279px] lg:h-[578px]">
+						<div className="w-full sm:w-[100px] sm:h-[100px] bg-gray-50 md:w-[150px] md:h-[200px] lg:w-[279px] lg:h-[578px]">
 							<p className="text-gray-700 text-xs lg:text-sm flex">Ad Space</p>
 						</div>
 					</div>
@@ -205,7 +205,7 @@ export default function Landingpage() {
 
 			<div className="relative flex pt-10 flex-wrap w-[1332px]">
 				<div className="bg-gray-300 flex items-center justify-center text-center">
-					<div className="w-full sm:w-[100px] sm:h-[100px] bg-gray-400 md:w-[150px] md:h-[200px] lg:w-[1332px] lg:h-[200px]">
+					<div className="w-full sm:w-[100px] sm:h-[100px] bg-gray-50 md:w-[150px] md:h-[200px] lg:w-[1332px] lg:h-[200px]">
 						<p className="text-gray-700 text-xs lg:text-sm flex">Ad Space</p>
 					</div>
 				</div>
